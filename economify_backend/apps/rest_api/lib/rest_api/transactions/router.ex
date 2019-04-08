@@ -8,13 +8,13 @@ defmodule RestApi.Transactions.Router do
     page = conn.params["page"] || 1
     page_size = conn.params["page_size"] || 5
 
-    send_json(conn, 200, Transactions.Service.get_all_paginated(page, page_size))
+    send_json(conn, 200, Transactions.Interface.get_all_paginated(page, page_size))
   end
 
   get "/:transaction_id" do
     transaction_id = conn.path_params["transaction_id"]
 
-    send_json(conn, 200, Transactions.Service.get_by_id(transaction_id))
+    send_json(conn, 200, Transactions.Interface.get_by_id(transaction_id))
   end
 
   post "/" do
@@ -32,7 +32,7 @@ defmodule RestApi.Transactions.Router do
   end
 
   defp create_transaction(transaction) do
-    case Transactions.Service.create(transaction) do
+    case Transactions.Interface.create(transaction) do
       {:ok, created_transaction} ->
         %{
           transaction_id: created_transaction.transaction_id
@@ -54,7 +54,7 @@ defmodule RestApi.Transactions.Router do
   end
 
   defp update_transaction(transaction_id, params) do
-    case Transactions.Service.update(transaction_id, params) do
+    case Transactions.Interface.update(transaction_id, params) do
       {:ok, _} ->
         {200, %{success: true}}
 
@@ -64,7 +64,7 @@ defmodule RestApi.Transactions.Router do
   end
 
   delete "/:transaction_id" do
-    {:ok, _} = Transactions.Service.delete(conn.path_params["transaction_id"])
+    {:ok, _} = Transactions.Interface.delete(conn.path_params["transaction_id"])
 
     send_json(conn, 200, %{success: true})
   end
