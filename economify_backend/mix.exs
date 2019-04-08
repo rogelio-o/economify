@@ -26,7 +26,8 @@ defmodule EconomifyBackend.MixProject do
       {:plug, "~> 1.8"},
       {:plug_cowboy, "~> 2.0"},
       {:ecto_sql, "~> 3.0"},
-      {:postgrex, ">= 0.0.0"}
+      {:postgrex, ">= 0.0.0"},
+      {:scrivener_ecto, "~> 2.2.0"}
     ]
   end
 end
