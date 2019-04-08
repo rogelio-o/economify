@@ -1,4 +1,4 @@
-defmodule EconomifyBackend.Endpoint do
+defmodule RestApi.Endpoint do
   use Plug.Router
 
   require Logger
@@ -13,7 +13,7 @@ defmodule EconomifyBackend.Endpoint do
 
   plug(:dispatch)
 
-  forward("/transactions", to: EconomifyBackend.Transactions.Router)
+  forward("/transactions", to: RestApi.Transactions.Router)
 
   match _ do
     send_resp(conn, 404, "Requested page not found!")
@@ -27,7 +27,7 @@ defmodule EconomifyBackend.Endpoint do
   end
 
   def start_link(_opts) do
-    with {:ok, [port: port] = config} <- Application.fetch_env(:economify_backend, __MODULE__) do
+    with {:ok, [port: port] = config} <- Application.fetch_env(:rest_api, __MODULE__) do
       Logger.info("Starting server at http://localhost:#{port}/")
       Plug.Cowboy.http(__MODULE__, [], config)
     end

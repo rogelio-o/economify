@@ -24,6 +24,7 @@ defmodule Transactions.MixProject do
 
   defp deps do
     [
+      {:poison, "~> 3.1"},
       {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
       {:scrivener_ecto, "~> 2.2.0"}
