@@ -1,6 +1,7 @@
-defmodule EconomifyBackend.Repo do
+defmodule Transactions.Repo do
   use Ecto.Repo,
-    otp_app: :economify_backend,
+    otp_app: :transactions,
     adapter: Ecto.Adapters.Postgres
+
   use Scrivener, page_size: 5, max_page_size: 100
 end

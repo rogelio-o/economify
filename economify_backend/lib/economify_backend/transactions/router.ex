@@ -17,7 +17,7 @@ defmodule EconomifyBackend.Transactions.Router do
 
   defp get_transactions(page, page_size) do
     page =
-      (Ecto.Query.from p in EconomifyBackend.Transactions.Schema, order_by: [desc: p.date])
+      Ecto.Query.from(p in EconomifyBackend.Transactions.Schema, order_by: [desc: p.date])
       |> EconomifyBackend.Repo.paginate(page: page, page_size: page_size)
 
     %{
@@ -48,11 +48,13 @@ defmodule EconomifyBackend.Transactions.Router do
   defp create_transaction(params) do
     transaction = %EconomifyBackend.Transactions.Schema{}
     changeset = EconomifyBackend.Transactions.Schema.changeset(transaction, params)
+
     case EconomifyBackend.Repo.insert(changeset) do
       {:ok, transaction} ->
         %{
           transaction_id: transaction.transaction_id
         }
+
       {:error, changeset} ->
         translate_errors(changeset)
     end
@@ -83,9 +85,11 @@ defmodule EconomifyBackend.Transactions.Router do
   defp update_transaction(transaction_id, params) do
     transaction = get_transaction_by_id(transaction_id)
     changeset = EconomifyBackend.Transactions.Schema.changeset(transaction, params)
+
     case EconomifyBackend.Repo.update(changeset) do
       {:ok, _} ->
         {200, %{success: true}}
+
       {:error, changeset} ->
         {400, translate_errors(changeset)}
     end
