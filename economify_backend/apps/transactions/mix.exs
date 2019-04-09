@@ -27,7 +27,8 @@ defmodule Transactions.MixProject do
       {:poison, "~> 3.1"},
       {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
-      {:scrivener_ecto, "~> 2.2.0"}
+      {:scrivener_ecto, "~> 2.2.0"},
+      {:ecto_enum, "~> 1.2"}
     ]
   end
 end
