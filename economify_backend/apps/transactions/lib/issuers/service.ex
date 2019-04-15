@@ -5,7 +5,7 @@ defmodule Issuers.Service do
     %Issuers.Schema{}
     |> Issuers.Schema.changeset(params)
     |> Transactions.Repo.insert()
-    |> parse_result
+    |> Utils.parse_result()
   end
 
   def update(issuer_id, params) do
@@ -13,7 +13,7 @@ defmodule Issuers.Service do
       %Issuers.Schema{issuer_id: issuer_id}
       |> Issuers.Schema.changeset(params)
       |> Transactions.Repo.update()
-      |> parse_result
+      |> Utils.parse_result()
     rescue
       _e in Ecto.StaleEntryError -> {:not_found}
       _e in Ecto.ChangeError -> {:bad_request}
