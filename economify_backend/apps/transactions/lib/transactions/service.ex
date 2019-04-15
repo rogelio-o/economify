@@ -29,13 +29,16 @@ defmodule Transactions.Service do
   end
 
   def get_all_paginated(page, page_size) do
-    Ecto.Query.from(p in Transactions.Schema, order_by: [desc: p.date])
+    Ecto.Query.from(p in Transactions.Schema, order_by: [desc: p.date], preload: [:issuer])
     |> Transactions.Repo.paginate(page: page, page_size: page_size)
   end
 
   def get_by_id(transaction_id) do
     try do
-      result = Transactions.Schema |> Transactions.Repo.get(transaction_id)
+      result =
+        Transactions.Schema
+        |> Transactions.Repo.get(transaction_id)
+        |> Transactions.Repo.preload([:issuer])
 
       case result do
         nil -> {:not_found}
