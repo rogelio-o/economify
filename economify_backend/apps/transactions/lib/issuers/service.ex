@@ -1,17 +1,17 @@
-defmodule Transactions.Service do
+defmodule Issuers.Service do
   require Ecto.Query
 
   def create(params) do
-    %Transactions.Schema{}
-    |> Transactions.Schema.changeset(params)
+    %Issuers.Schema{}
+    |> Issuers.Schema.changeset(params)
     |> Transactions.Repo.insert()
     |> parse_result
   end
 
-  def update(transaction_id, params) do
+  def update(issuer_id, params) do
     try do
-      %Transactions.Schema{transaction_id: transaction_id}
-      |> Transactions.Schema.changeset(params)
+      %Issuers.Schema{issuer_id: issuer_id}
+      |> Issuers.Schema.changeset(params)
       |> Transactions.Repo.update()
       |> parse_result
     rescue
@@ -20,22 +20,22 @@ defmodule Transactions.Service do
     end
   end
 
-  def delete(transaction_id) do
-    case get_by_id(transaction_id) do
+  def delete(issuer_id) do
+    case get_by_id(issuer_id) do
       {:not_found} -> {:not_found}
       {:bad_request} -> {:bad_request}
-      {:ok, transaction} -> Transactions.Repo.delete(transaction)
+      {:ok, issuer} -> Transactions.Repo.delete(issuer)
     end
   end
 
   def get_all_paginated(page, page_size) do
-    Ecto.Query.from(p in Transactions.Schema, order_by: [desc: p.date])
+    Ecto.Query.from(p in Issuers.Schema, order_by: [desc: p.date])
     |> Transactions.Repo.paginate(page: page, page_size: page_size)
   end
 
-  def get_by_id(transaction_id) do
+  def get_by_id(issuer_id) do
     try do
-      result = Transactions.Schema |> Transactions.Repo.get(transaction_id)
+      result = Issuers.Schema |> Transactions.Repo.get(issuer_id)
 
       case result do
         nil -> {:not_found}
