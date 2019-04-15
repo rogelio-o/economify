@@ -5,6 +5,7 @@ defmodule Transactions.Schema do
   use Ecto.Schema
 
   @primary_key {:transaction_id, :binary_id, autogenerate: true}
+  @timestamps_opts [type: :utc_datetime]
   @derive {Poison.Encoder, except: [:__meta__, :inserted_at, :updated_at]}
   schema "transactions" do
     field(:bank_id, :string)
@@ -13,8 +14,8 @@ defmodule Transactions.Schema do
     field(:concept, :string)
     field(:amount, :float)
     field(:date, :date)
-    field(:inserted_at, :utc_datetime)
-    field(:updated_at, :utc_datetime)
+
+    timestamps(type: :utc_datetime)
   end
 
   def changeset(transaction, params \\ %{}) do

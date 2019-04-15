@@ -10,8 +10,12 @@ defmodule Transactions.Repo.Migrations.CreateTransactions do
       add(:concept, :string, null: false)
       add(:amount, :float, null: false)
       add(:date, :date, null: false)
-      add(:inserted_at, :utc_datetime, default: fragment("now()"))
-      add(:updated_at, :utc_datetime, default: fragment("now()"))
+
+      timestamps(type: :utc_datetime)
     end
+  end
+
+  def down do
+    drop(table("transactions"))
   end
 end
