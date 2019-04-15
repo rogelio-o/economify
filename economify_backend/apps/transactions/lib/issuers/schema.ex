@@ -10,10 +10,9 @@ defmodule Issuers.Schema do
     field(:updated_at, :utc_datetime)
   end
 
-  def changeset(transaction, params \\ %{}) do
-    transaction
-    |> Ecto.Changeset.validate_required([
-      :name
-    ])
+  def changeset(issuer, params \\ %{}) do
+    issuer
+    |> Ecto.Changeset.cast(params, [:name])
+    |> Ecto.Changeset.validate_required([:name])
   end
 end

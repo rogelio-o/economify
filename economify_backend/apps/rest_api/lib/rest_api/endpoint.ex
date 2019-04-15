@@ -13,6 +13,7 @@ defmodule RestApi.Endpoint do
 
   plug(:dispatch)
 
+  forward("/transactions/issuers", to: RestApi.Transactions.Issuers.Router)
   forward("/transactions", to: RestApi.Transactions.Router)
 
   match _ do

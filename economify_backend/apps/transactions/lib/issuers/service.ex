@@ -29,7 +29,7 @@ defmodule Issuers.Service do
   end
 
   def get_all_paginated(page, page_size) do
-    Ecto.Query.from(p in Issuers.Schema, order_by: [desc: p.date])
+    Ecto.Query.from(p in Issuers.Schema, order_by: [asc: p.name])
     |> Transactions.Repo.paginate(page: page, page_size: page_size)
   end
 
