@@ -13,7 +13,7 @@ defmodule Issuers.Schema do
 
   def changeset(issuer, params \\ %{}) do
     issuer
-    |> Ecto.Changeset.cast(params, [:name])
+    |> Ecto.Changeset.cast(params, [:name, :description])
     |> Ecto.Changeset.validate_required([:name])
   end
 end

@@ -13,7 +13,7 @@ defmodule BanksAccounts.Schema do
 
   def changeset(bank_account, params \\ %{}) do
     bank_account
-    |> Ecto.Changeset.cast(params, [:name])
+    |> Ecto.Changeset.cast(params, [:name, :description])
     |> Ecto.Changeset.validate_required([:name])
   end
 end
