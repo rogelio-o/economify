@@ -5,6 +5,7 @@ defmodule Transactions.Service do
     %Transactions.Schema{}
     |> Transactions.Schema.changeset(params)
     |> Transactions.Repo.insert()
+    |> preload_result
     |> Utils.parse_result()
   end
 
@@ -13,6 +14,7 @@ defmodule Transactions.Service do
       %Transactions.Schema{transaction_id: transaction_id}
       |> Transactions.Schema.changeset(params)
       |> Transactions.Repo.update()
+      |> preload_result
       |> Utils.parse_result()
     rescue
       _e in Ecto.StaleEntryError -> {:not_found}
@@ -46,6 +48,16 @@ defmodule Transactions.Service do
       end
     rescue
       _e in Ecto.Query.CastError -> {:bad_request}
+    end
+  end
+
+  defp preload_result(result) do
+    case result do
+      {:ok, transaction} ->
+        {:ok, Transactions.Repo.preload(transaction, [:issuer])}
+
+      _ ->
+        result
     end
   end
 end
