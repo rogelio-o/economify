@@ -6,7 +6,7 @@ defmodule Categories.Repo.Migrations.CreateCategoriesTable do
       add(:category_id, :uuid, null: false, primary_key: true)
       add(:name, :string, null: false)
       add(:description, :string)
-      add(:status, TypeEnum.type(), null: false)
+      add(:type, TypeEnum.type(), null: false)
 
       timestamps(type: :utc_datetime)
     end
