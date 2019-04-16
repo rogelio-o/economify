@@ -17,7 +17,7 @@ defmodule Categories.Schema do
 
   def changeset(category, params \\ %{}) do
     category
-    |> Ecto.Changeset.cast(params, [:name])
-    |> Ecto.Changeset.validate_required([:name])
+    |> Ecto.Changeset.cast(params, [:name, :type])
+    |> Ecto.Changeset.validate_required([:name, :type])
   end
 end
