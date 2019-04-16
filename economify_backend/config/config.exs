@@ -10,3 +10,11 @@ config :transactions, Transactions.Repo,
   hostname: "localhost"
 
 config :transactions, ecto_repos: [Transactions.Repo]
+
+config :banks, Banks.Repo,
+  database: "banks_repo",
+  username: "postgres",
+  password: "postgres",
+  hostname: "localhost"
+
+config :banks, ecto_repos: [Banks.Repo]
