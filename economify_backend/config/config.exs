@@ -1,5 +1,7 @@
 use Mix.Config
 
+config :postgrex, :json_library, Poison
+
 config :rest_api, RestApi.Endpoint,
   port: (System.get_env("PORT") || "4000") |> String.to_integer()
 
