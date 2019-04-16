@@ -16,6 +16,8 @@ defmodule RestApi.Endpoint do
   forward("/transactions/issuers", to: RestApi.Transactions.Issuers.Router)
   forward("/transactions", to: RestApi.Transactions.Router)
 
+  forward("/banks/accounts", to: RestApi.Banks.Accounts.Router)
+
   match _ do
     send_resp(conn, 404, "Requested page not found!")
   end
