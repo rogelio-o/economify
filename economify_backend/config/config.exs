@@ -18,3 +18,11 @@ config :banks, Banks.Repo,
   hostname: "localhost"
 
 config :banks, ecto_repos: [Banks.Repo]
+
+config :categories, Categories.Repo,
+  database: "categories_repo",
+  username: "postgres",
+  password: "postgres",
+  hostname: "localhost"
+
+config :categories, ecto_repos: [Categories.Repo]
