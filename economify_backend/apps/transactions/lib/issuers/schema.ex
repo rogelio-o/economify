@@ -7,13 +7,14 @@ defmodule Issuers.Schema do
   schema "issuers" do
     field(:name, :string)
     field(:description, :string)
+    field(:alias, {:array, :string})
 
     timestamps(type: :utc_datetime)
   end
 
   def changeset(issuer, params \\ %{}) do
     issuer
-    |> Ecto.Changeset.cast(params, [:name, :description])
+    |> Ecto.Changeset.cast(params, [:name, :description, :alias])
     |> Ecto.Changeset.validate_required([:name])
   end
 end
