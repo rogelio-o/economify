@@ -18,7 +18,7 @@ defmodule RestApi.Endpoint do
 
   forward("/banks/accounts", to: RestApi.Banks.Accounts.Router)
 
-  forward("/categories/rules", to: RestApi.Categories.Rules.Router)
+  forward("/categories/:category_id/rules", to: RestApi.Categories.Rules.Router)
   forward("/categories", to: RestApi.Categories.Router)
 
   match _ do

@@ -9,13 +9,13 @@ defmodule Categories.Interface do
 
   defdelegate get_category_by_id(category_id), to: Categories.Service, as: :get_by_id
 
-  defdelegate create_rule(params), to: Rules.Service, as: :create
-  defdelegate update_rule(rule_id, params), to: Rules.Service, as: :update
-  defdelegate delete_rule(rule_id), to: Rules.Service, as: :delete
+  defdelegate create_rule(category_id, params), to: Rules.Service, as: :create
+  defdelegate update_rule(category_id, rule_id, params), to: Rules.Service, as: :update
+  defdelegate delete_rule(category_id, rule_id), to: Rules.Service, as: :delete
 
-  defdelegate get_rules_all_paginated(page, page_size),
+  defdelegate get_rules_all_paginated(category_id, page, page_size),
     to: Rules.Service,
     as: :get_all_paginated
 
-  defdelegate get_rule_by_id(rule_id), to: Rules.Service, as: :get_by_id
+  defdelegate get_rule_by_id(category_id, rule_id), to: Rules.Service, as: :get_by_id
 end

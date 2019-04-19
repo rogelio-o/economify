@@ -17,7 +17,7 @@ defmodule Rules.Schema do
 
   def changeset(rule, params \\ %{}) do
     rule
-    |> Ecto.Changeset.cast(params, [:name, :description, :priority, :params, :category_id])
+    |> Ecto.Changeset.cast(params, [:name, :description, :priority, :params])
     |> Ecto.Changeset.validate_required([:name, :priority, :category_id])
     |> Ecto.Changeset.foreign_key_constraint(:issuers, name: :rules_category_id_fkey)
   end
