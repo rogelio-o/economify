@@ -26,12 +26,12 @@ class UpdateBankAccountPage extends React.Component {
     );
   }
 
-  handleChange(name, event) {
+  handleChange(name, value) {
     this.setState({
       model: {
         ...this.state.model,
         [name]: {
-          value: event.target.value,
+          value: value,
           errors: [],
         },
       },
