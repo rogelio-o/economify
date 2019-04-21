@@ -1,45 +1,40 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Row, Col, Card, CardBody } from 'reactstrap';
-import { MdAdd } from 'react-icons/md';
+import { Button, ButtonGroup, Row, Col, Card, CardBody } from 'reactstrap';
+import { MdAdd, MdModeEdit, MdDelete } from 'react-icons/md';
 import Page from 'components/Page';
-import Loading from 'components/Loading';
 import CategoriesTable from 'components/CategoriesTable';
-import DataPagination from 'components/DataPagination';
-import { getCategoriesPage, deleteCategory } from 'services/categoriesService';
+import { deleteCategory } from 'services/categoriesService';
 
 class CategoriesPage extends React.Component {
-  state = {
-    loading: true,
-    data: {
-      entries: [],
-    },
-  };
-
-  componentDidMount() {
-    this.loadPage(1);
-  }
-
-  loadPage(page) {
-    this.setState({ loading: true });
-
-    getCategoriesPage(page).then(data =>
-      this.setState({ data, loading: false }),
-    );
-  }
-
-  handleDelete(categoryId) {
+  handleDelete(categoryId, setLoading, refresh) {
     if (window.confirm('Are you sure you want to delete this entry?')) {
-      this.setState({ loading: true });
+      setLoading(true);
       deleteCategory(categoryId)
         .then(() => {
-          this.loadPage(this.state.data.page_number);
+          refresh();
         })
         .catch(err => {
-          this.setState({ loading: false });
+          setLoading(false);
           alert(err.message);
         });
     }
+  }
+
+  renderButtons(row, setLoading, refresh) {
+    return (
+      <ButtonGroup className="mr-3 mb-3">
+        <Button tag={Link} to={`/categories/${row.category_id}`} color="info">
+          <MdModeEdit />
+        </Button>
+        <Button
+          color="danger"
+          onClick={e => this.handleDelete(row.category_id, setLoading, refresh)}
+        >
+          <MdDelete />
+        </Button>
+      </ButtonGroup>
+    );
   }
 
   render() {
@@ -64,22 +59,13 @@ class CategoriesPage extends React.Component {
         <Row>
           <Col>
             <Card className="mb-3">
-              {this.state.loading ? (
-                <CardBody>
-                  <Loading />
-                </CardBody>
-              ) : (
-                <CardBody>
-                  <CategoriesTable
-                    data={this.state.data.entries}
-                    handleDelete={categoryId => this.handleDelete(categoryId)}
-                  />
-                  <DataPagination
-                    data={this.state.data}
-                    loadPage={page => this.loadPage(page)}
-                  />
-                </CardBody>
-              )}
+              <CardBody>
+                <CategoriesTable
+                  renderButtons={(row, setLoading, refresh) =>
+                    this.renderButtons(row, setLoading, refresh)
+                  }
+                />
+              </CardBody>
             </Card>
           </Col>
         </Row>

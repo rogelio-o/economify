@@ -1,48 +1,46 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Row, Col, Card, CardBody } from 'reactstrap';
-import { MdAdd } from 'react-icons/md';
+import { Button, ButtonGroup, Row, Col, Card, CardBody } from 'reactstrap';
+import { MdAdd, MdModeEdit, MdDelete } from 'react-icons/md';
 import Page from 'components/Page';
-import Loading from 'components/Loading';
 import BanksAccountsTable from 'components/BanksAccountsTable';
-import DataPagination from 'components/DataPagination';
-import {
-  getBanksAccountsPage,
-  deleteBankAccount,
-} from 'services/banksAccountsService';
+import { deleteBankAccount } from 'services/banksAccountsService';
 
 class BanksAccountsPage extends React.Component {
-  state = {
-    loading: true,
-    data: {
-      entries: [],
-    },
-  };
-
-  componentDidMount() {
-    this.loadPage(1);
-  }
-
-  loadPage(page) {
-    this.setState({ loading: true });
-
-    getBanksAccountsPage(page).then(data =>
-      this.setState({ data, loading: false }),
-    );
-  }
-
-  handleDelete(bankAccountId) {
+  handleDelete(bankAccountId, setLoading, refresh) {
     if (window.confirm('Are you sure you want to delete this entry?')) {
-      this.setState({ loading: true });
+      setLoading(true);
       deleteBankAccount(bankAccountId)
         .then(() => {
-          this.loadPage(this.state.data.page_number);
+          refresh();
         })
         .catch(err => {
-          this.setState({ loading: false });
+          setLoading(false);
           alert(err.message);
         });
     }
+  }
+
+  renderButtons(row, setLoading, refresh) {
+    return (
+      <ButtonGroup className="mr-3 mb-3">
+        <Button
+          tag={Link}
+          to={`/banks/accounts/${row.bank_account_id}`}
+          color="info"
+        >
+          <MdModeEdit />
+        </Button>
+        <Button
+          color="danger"
+          onClick={e =>
+            this.handleDelete(row.bank_account_id, setLoading, refresh)
+          }
+        >
+          <MdDelete />
+        </Button>
+      </ButtonGroup>
+    );
   }
 
   render() {
@@ -67,24 +65,13 @@ class BanksAccountsPage extends React.Component {
         <Row>
           <Col>
             <Card className="mb-3">
-              {this.state.loading ? (
-                <CardBody>
-                  <Loading />
-                </CardBody>
-              ) : (
-                <CardBody>
-                  <BanksAccountsTable
-                    data={this.state.data.entries}
-                    handleDelete={bankAccountId =>
-                      this.handleDelete(bankAccountId)
-                    }
-                  />
-                  <DataPagination
-                    data={this.state.data}
-                    loadPage={page => this.loadPage(page)}
-                  />
-                </CardBody>
-              )}
+              <CardBody>
+                <BanksAccountsTable
+                  renderButtons={(row, setLoading, refresh) =>
+                    this.renderButtons(row, setLoading, refresh)
+                  }
+                />
+              </CardBody>
             </Card>
           </Col>
         </Row>

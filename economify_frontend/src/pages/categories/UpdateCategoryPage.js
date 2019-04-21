@@ -1,18 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Row, Col, Card, CardBody, CardHeader } from 'reactstrap';
-import { MdAdd } from 'react-icons/md';
+import {
+  Button,
+  ButtonGroup,
+  Row,
+  Col,
+  Card,
+  CardBody,
+  CardHeader,
+} from 'reactstrap';
+import { MdAdd, MdModeEdit, MdDelete } from 'react-icons/md';
 import Page from 'components/Page';
 import CategoryForm from 'components/CategoryForm';
 import CategoriesRulesTable from 'components/CategoriesRulesTable';
-import DataPagination from 'components/DataPagination';
 import { getCategory, updateCategory } from 'services/categoriesService';
 import { parseModel } from 'utils/form';
+import { deleteCategoryRule } from 'services/categoriesRulesService';
 import Loading from 'components/Loading';
-import {
-  getCategoriesRulesPage,
-  deleteCategoryRule,
-} from 'services/categoriesRulesService';
 
 class UpdateCategoryPage extends React.Component {
   state = {
@@ -21,10 +25,6 @@ class UpdateCategoryPage extends React.Component {
     errorsMsgs: [],
     loading: false,
     loadingModel: true,
-    loadingRules: true,
-    rulesData: {
-      entries: [],
-    },
   };
 
   componentDidMount() {
@@ -33,8 +33,6 @@ class UpdateCategoryPage extends React.Component {
     getCategory(categoryId).then(values =>
       this.setState({ loadingModel: false, model: parseModel(values) }),
     );
-
-    this.loadRulePage(1);
   }
 
   handleChange(name, value) {
@@ -66,28 +64,41 @@ class UpdateCategoryPage extends React.Component {
       });
   }
 
-  loadRulePage(page) {
-    const categoryId = this.props.match.params.category_id;
-    this.setState({ loadingRules: true });
-
-    getCategoriesRulesPage(categoryId, page).then(rulesData =>
-      this.setState({ rulesData, loadingRules: false }),
-    );
-  }
-
-  handleDeleteRule(categoryRuleId) {
+  handleDeleteRule(categoryRuleId, setLoading, refresh) {
     if (window.confirm('Are you sure you want to delete this entry?')) {
       const categoryId = this.props.match.params.category_id;
-      this.setState({ loadingRules: true });
+      setLoading(true);
       deleteCategoryRule(categoryId, categoryRuleId)
         .then(() => {
-          this.loadRulePage(this.state.rulesData.page_number);
+          refresh();
         })
         .catch(err => {
-          this.setState({ loadingRules: false });
+          setLoading(false);
           alert(err.message);
         });
     }
+  }
+
+  renderRulesButtons(row, setLoading, refresh) {
+    return (
+      <ButtonGroup className="mr-3 mb-3">
+        <Button
+          tag={Link}
+          to={`/categories/${row.category_id}/rules/${row.category_rule_id}`}
+          color="info"
+        >
+          <MdModeEdit />
+        </Button>
+        <Button
+          color="danger"
+          onClick={e =>
+            this.handleDeleteRule(row.category_rule_id, setLoading, refresh)
+          }
+        >
+          <MdDelete />
+        </Button>
+      </ButtonGroup>
+    );
   }
 
   render() {
@@ -144,20 +155,12 @@ class UpdateCategoryPage extends React.Component {
             <Card className="mb-3">
               <CardHeader>Rules</CardHeader>
               <CardBody>
-                {this.state.loadingRules ? (
-                  <Loading />
-                ) : (
-                  <div>
-                    <CategoriesRulesTable
-                      data={this.state.rulesData.entries}
-                      handleDelete={ruleId => this.handleDeleteRule(ruleId)}
-                    />
-                    <DataPagination
-                      data={this.state.rulesData}
-                      loadPage={page => this.loadRulePage(page)}
-                    />
-                  </div>
-                )}
+                <CategoriesRulesTable
+                  categoryId={categoryId}
+                  renderButtons={(row, setLoading, refresh) =>
+                    this.renderRulesButtons(row, setLoading, refresh)
+                  }
+                />
               </CardBody>
             </Card>
           </Col>

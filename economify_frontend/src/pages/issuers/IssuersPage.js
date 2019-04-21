@@ -1,43 +1,40 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Row, Col, Card, CardBody } from 'reactstrap';
-import { MdAdd } from 'react-icons/md';
+import { Button, ButtonGroup, Row, Col, Card, CardBody } from 'reactstrap';
+import { MdAdd, MdModeEdit, MdDelete } from 'react-icons/md';
 import Page from 'components/Page';
-import Loading from 'components/Loading';
 import IssuersTable from 'components/IssuersTable';
-import DataPagination from 'components/DataPagination';
-import { getIssuersPage, deleteIssuer } from 'services/issuersService';
+import { deleteIssuer } from 'services/issuersService';
 
 class IssuersPage extends React.Component {
-  state = {
-    loading: true,
-    data: {
-      entries: [],
-    },
-  };
-
-  componentDidMount() {
-    this.loadPage(1);
-  }
-
-  loadPage(page) {
-    this.setState({ loading: true });
-
-    getIssuersPage(page).then(data => this.setState({ data, loading: false }));
-  }
-
-  handleDelete(issuerId) {
+  handleDelete(issuerId, setLoading, refresh) {
     if (window.confirm('Are you sure you want to delete this entry?')) {
-      this.setState({ loading: true });
+      setLoading(true);
       deleteIssuer(issuerId)
         .then(() => {
-          this.loadPage(this.state.data.page_number);
+          refresh();
         })
         .catch(err => {
-          this.setState({ loading: false });
+          setLoading(false);
           alert(err.message);
         });
     }
+  }
+
+  renderButtons(row, setLoading, refresh) {
+    return (
+      <ButtonGroup className="mr-3 mb-3">
+        <Button tag={Link} to={`/issuers/${row.issuer_id}`} color="info">
+          <MdModeEdit />
+        </Button>
+        <Button
+          color="danger"
+          onClick={e => this.handleDelete(row.issuer_id, setLoading, refresh)}
+        >
+          <MdDelete />
+        </Button>
+      </ButtonGroup>
+    );
   }
 
   render() {
@@ -59,22 +56,13 @@ class IssuersPage extends React.Component {
         <Row>
           <Col>
             <Card className="mb-3">
-              {this.state.loading ? (
-                <CardBody>
-                  <Loading />
-                </CardBody>
-              ) : (
-                <CardBody>
-                  <IssuersTable
-                    data={this.state.data.entries}
-                    handleDelete={issuerId => this.handleDelete(issuerId)}
-                  />
-                  <DataPagination
-                    data={this.state.data}
-                    loadPage={page => this.loadPage(page)}
-                  />
-                </CardBody>
-              )}
+              <CardBody>
+                <IssuersTable
+                  renderButtons={(row, setLoading, refresh) =>
+                    this.renderButtons(row, setLoading, refresh)
+                  }
+                />
+              </CardBody>
             </Card>
           </Col>
         </Row>
