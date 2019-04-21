@@ -3,6 +3,8 @@ defmodule RestApi.Endpoint do
 
   require Logger
 
+  plug CORSPlug
+
   plug(:match)
 
   plug(Plug.Parsers,

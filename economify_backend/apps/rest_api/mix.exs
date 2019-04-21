@@ -29,6 +29,7 @@ defmodule RestApi.MixProject do
       {:poison, "~> 3.1"},
       {:plug, "~> 1.8"},
       {:plug_cowboy, "~> 2.0"},
+      {:cors_plug, "~> 2.0"},
       {:transactions, in_umbrella: true}
     ]
   end
