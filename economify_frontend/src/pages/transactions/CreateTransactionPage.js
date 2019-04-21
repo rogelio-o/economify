@@ -36,9 +36,7 @@ class CreateTransactionPage extends React.Component {
     createTransaction(this.state.model)
       .then(response => {
         if (response.success) {
-          this.props.history.push(
-            `/transactions/${response.model.transaction_id.value}`,
-          );
+          this.props.history.push(`/transactions`);
         } else {
           this.setState({ model: response.model, loading: false });
         }

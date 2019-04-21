@@ -1,17 +1,17 @@
 import React from 'react';
 import { Row, Col, Card, CardBody } from 'reactstrap';
 import Page from 'components/Page';
-import BankAccountForm from 'components/BankAccountForm';
+import TransactionForm from 'components/TransactionForm';
 import {
-  getBankAccount,
-  updateBankAccount,
-} from 'services/banksAccountsService';
+  getTransaction,
+  updateTransaction,
+} from 'services/transactionsService';
 import { parseModel } from 'utils/form';
 import Loading from 'components/Loading';
 
-class UpdateBankAccountPage extends React.Component {
+class UpdateTransactionPage extends React.Component {
   state = {
-    model: parseModel({ bank_account_id: '' }),
+    model: parseModel({ transaction_id: '' }),
     successMsgs: [],
     errorsMsgs: [],
     loading: false,
@@ -19,9 +19,9 @@ class UpdateBankAccountPage extends React.Component {
   };
 
   componentDidMount() {
-    const bankAccountId = this.props.match.params.bank_account_id;
+    const transactionId = this.props.match.params.transaction_id;
 
-    getBankAccount(bankAccountId).then(values =>
+    getTransaction(transactionId).then(values =>
       this.setState({ loadingModel: false, model: parseModel(values) }),
     );
   }
@@ -40,8 +40,8 @@ class UpdateBankAccountPage extends React.Component {
 
   handleSubmit() {
     this.setState({ loading: true, errorsMsgs: [], successMsgs: [] });
-    const bankAccountId = this.props.match.params.bank_account_id;
-    updateBankAccount(bankAccountId, this.state.model)
+    const transactionId = this.props.match.params.transaction_id;
+    updateTransaction(transactionId, this.state.model)
       .then(response => {
         const successMsgs = [];
         if (response.success) {
@@ -58,9 +58,9 @@ class UpdateBankAccountPage extends React.Component {
   render() {
     return (
       <Page
-        title="Update Bank Account"
+        title="Update Transaction"
         breadcrumbs={[
-          { name: 'Banks Accounts' },
+          { name: 'Transactions' },
           {
             name: 'Update',
             active: true,
@@ -74,7 +74,7 @@ class UpdateBankAccountPage extends React.Component {
                 {this.state.loadingModel ? (
                   <Loading />
                 ) : (
-                  <BankAccountForm
+                  <TransactionForm
                     model={this.state.model}
                     loading={this.state.loading}
                     handleChange={(name, event) =>
@@ -94,4 +94,4 @@ class UpdateBankAccountPage extends React.Component {
   }
 }
 
-export default UpdateBankAccountPage;
+export default UpdateTransactionPage;
