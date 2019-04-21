@@ -7,6 +7,9 @@ import TransactionFormPage from 'pages/transactions/TransactionFormPage';
 import BanksAccountsPage from 'pages/banks_accounts/BanksAccountsPage';
 import CreateBankAccountPage from 'pages/banks_accounts/CreateBankAccountPage';
 import UpdateBankAccountPage from 'pages/banks_accounts/UpdateBankAccountPage';
+import CategoriesPage from 'pages/categories/CategoriesPage';
+import CreateCategoryPage from 'pages/categories/CreateCategoryPage';
+import UpdateCategoryPage from 'pages/categories/UpdateCategoryPage';
 import StatisticsPage from 'pages/StatisticsPage';
 import './styles/app.scss';
 
@@ -30,6 +33,24 @@ class App extends Component {
             path="/transactions/form"
             layout={MainLayout}
             component={TransactionFormPage}
+          />
+          <LayoutRoute
+            exact
+            path="/categories"
+            layout={MainLayout}
+            component={CategoriesPage}
+          />
+          <LayoutRoute
+            exact
+            path="/categories/create"
+            layout={MainLayout}
+            component={CreateCategoryPage}
+          />
+          <LayoutRoute
+            exact
+            path="/categories/:category_id"
+            layout={MainLayout}
+            component={UpdateCategoryPage}
           />
           <LayoutRoute
             exact
