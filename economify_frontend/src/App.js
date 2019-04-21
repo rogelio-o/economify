@@ -3,7 +3,8 @@ import { BrowserRouter, Redirect, Switch } from 'react-router-dom';
 import componentQueries from 'react-component-queries';
 import { LayoutRoute, MainLayout } from 'components/Layout';
 import TransactionsPage from 'pages/transactions/TransactionsPage';
-import TransactionFormPage from 'pages/transactions/TransactionFormPage';
+import CreateTransactionPage from 'pages/transactions/CreateTransactionPage';
+import UpdateTransactionPage from 'pages/transactions/UpdateTransactionPage';
 import BanksAccountsPage from 'pages/banks_accounts/BanksAccountsPage';
 import CreateBankAccountPage from 'pages/banks_accounts/CreateBankAccountPage';
 import UpdateBankAccountPage from 'pages/banks_accounts/UpdateBankAccountPage';
@@ -28,13 +29,25 @@ class App extends Component {
             exact
             path="/"
             layout={MainLayout}
+            component={StatisticsPage}
+          />
+          <LayoutRoute
+            exact
+            path="/transactions"
+            layout={MainLayout}
             component={TransactionsPage}
           />
           <LayoutRoute
             exact
-            path="/transactions/form"
+            path="/transactions/create"
             layout={MainLayout}
-            component={TransactionFormPage}
+            component={CreateTransactionPage}
+          />
+          <LayoutRoute
+            exact
+            path="/transactions/:transaction_id"
+            layout={MainLayout}
+            component={UpdateTransactionPage}
           />
           <LayoutRoute
             exact
