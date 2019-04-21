@@ -10,6 +10,8 @@ import UpdateBankAccountPage from 'pages/banks_accounts/UpdateBankAccountPage';
 import CategoriesPage from 'pages/categories/CategoriesPage';
 import CreateCategoryPage from 'pages/categories/CreateCategoryPage';
 import UpdateCategoryPage from 'pages/categories/UpdateCategoryPage';
+import CreateRulePage from 'pages/categories/rules/CreateRulePage';
+import UpdateRulePage from 'pages/categories/rules/UpdateRulePage';
 import StatisticsPage from 'pages/StatisticsPage';
 import './styles/app.scss';
 
@@ -51,6 +53,18 @@ class App extends Component {
             path="/categories/:category_id"
             layout={MainLayout}
             component={UpdateCategoryPage}
+          />
+          <LayoutRoute
+            exact
+            path="/categories/:category_id/rules/create"
+            layout={MainLayout}
+            component={CreateRulePage}
+          />
+          <LayoutRoute
+            exact
+            path="/categories/:category_id/rules/:category_rule_id"
+            layout={MainLayout}
+            component={UpdateRulePage}
           />
           <LayoutRoute
             exact
