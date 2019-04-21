@@ -22,6 +22,7 @@ const navItems = [
     exact: false,
     Icon: MdWidgets,
   },
+  { to: '/issuers', name: 'issuers', exact: false, Icon: MdInsertChart },
 ];
 
 const bem = bn.create('sidebar');

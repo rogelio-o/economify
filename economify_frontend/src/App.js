@@ -5,6 +5,9 @@ import { LayoutRoute, MainLayout } from 'components/Layout';
 import TransactionsPage from 'pages/transactions/TransactionsPage';
 import CreateTransactionPage from 'pages/transactions/CreateTransactionPage';
 import UpdateTransactionPage from 'pages/transactions/UpdateTransactionPage';
+import IssuersPage from 'pages/issuers/IssuersPage';
+import CreateIssuerPage from 'pages/issuers/CreateIssuerPage';
+import UpdateIssuerPage from 'pages/issuers/UpdateIssuerPage';
 import BanksAccountsPage from 'pages/banks_accounts/BanksAccountsPage';
 import CreateBankAccountPage from 'pages/banks_accounts/CreateBankAccountPage';
 import UpdateBankAccountPage from 'pages/banks_accounts/UpdateBankAccountPage';
@@ -48,6 +51,24 @@ class App extends Component {
             path="/transactions/:transaction_id"
             layout={MainLayout}
             component={UpdateTransactionPage}
+          />
+          <LayoutRoute
+            exact
+            path="/issuers"
+            layout={MainLayout}
+            component={IssuersPage}
+          />
+          <LayoutRoute
+            exact
+            path="/issuers/create"
+            layout={MainLayout}
+            component={CreateIssuerPage}
+          />
+          <LayoutRoute
+            exact
+            path="/issuers/:issuer_id"
+            layout={MainLayout}
+            component={UpdateIssuerPage}
           />
           <LayoutRoute
             exact
