@@ -4,6 +4,7 @@ defmodule Transactions.Service do
   def create(params) do
     params_with_issuer_and_category = params
     |> add_issuer_to_params
+    |> categorize
 
     %Transactions.Schema{}
     |> Transactions.Schema.changeset(params_with_issuer_and_category)
@@ -18,6 +19,14 @@ defmodule Transactions.Service do
     else
       {:ok, issuer} = Issuers.Service.get_or_create_by_name(params["issuer"])
       Map.put(params, "issuer_id", issuer.issuer_id)
+    end
+  end
+
+  defp categorize(params) do
+    if Map.has_key?(params, "category_id") do
+      params
+    else
+      Map.put(params, "category_id", Categories.Interface.categorize(params))
     end
   end
 

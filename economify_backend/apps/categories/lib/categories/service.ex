@@ -45,4 +45,23 @@ defmodule Categories.Service do
       _e in Ecto.Query.CastError -> {:bad_request}
     end
   end
+
+  def categorize(transaction) do
+    category_type = cond do
+      transaction.amount >= 0 -> :income
+      true -> :expense
+    end
+
+    rules = Ecto.Query.from(
+      p in Rules.Schema,
+      join: c in "categories", on: c.category_id == p.category_id,
+      where: c.type == ^category_type,
+      order_by: [asc: p.priority]
+    )
+    |> Categories.Repo.all
+
+    rule = Enum.find(rules, fn rule -> Rules.Rule.get(rule).check(transaction, rule.params) end)
+
+    rule.category_id
+  end
 end

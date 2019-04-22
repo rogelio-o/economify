@@ -8,6 +8,7 @@ defmodule Categories.Interface do
     as: :get_all_paginated
 
   defdelegate get_category_by_id(category_id), to: Categories.Service, as: :get_by_id
+  defdelegate categorize(transaction), to: Categories.Service
 
   defdelegate create_rule(category_id, params), to: Rules.Service, as: :create
   defdelegate update_rule(category_id, rule_id, params), to: Rules.Service, as: :update

@@ -7,6 +7,7 @@ defmodule Categories.Repo.Migrations.CreateCategoriesRulesTable do
       add(:name, :string, null: false)
       add(:description, :string)
       add(:priority, :integer, null: false)
+      add(:type, RuleType.type(), null: false)
       add(:params, :map)
 
       timestamps(type: :utc_datetime)

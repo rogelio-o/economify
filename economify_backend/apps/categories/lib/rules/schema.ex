@@ -1,3 +1,6 @@
+import EctoEnum
+defenum(RuleType, concept: 0, issuer: 1)
+
 defmodule Rules.Schema do
   use Ecto.Schema
 
@@ -9,6 +12,7 @@ defmodule Rules.Schema do
     field(:name, :string)
     field(:description, :string)
     field(:priority, :integer)
+    field(:type, RuleType)
     field(:params, :map)
 
     timestamps(type: :utc_datetime)
@@ -17,8 +21,8 @@ defmodule Rules.Schema do
 
   def changeset(rule, params \\ %{}) do
     rule
-    |> Ecto.Changeset.cast(params, [:name, :description, :priority, :params])
-    |> Ecto.Changeset.validate_required([:name, :priority, :category_id])
+    |> Ecto.Changeset.cast(params, [:name, :description, :priority, :params, :type])
+    |> Ecto.Changeset.validate_required([:name, :priority, :category_id, :type])
     |> Ecto.Changeset.foreign_key_constraint(:issuers, name: :rules_category_id_fkey)
   end
 end
