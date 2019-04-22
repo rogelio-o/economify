@@ -4,7 +4,11 @@ import { Button, ButtonGroup, Row, Col, Card, CardBody } from 'reactstrap';
 import { MdAdd, MdModeEdit, MdDelete } from 'react-icons/md';
 import Page from 'components/Page';
 import TransactionsTable from 'components/TransactionsTable';
-import { deleteTransaction } from 'services/transactionsService';
+import {
+  createTransaction,
+  deleteTransaction,
+} from 'services/transactionsService';
+import { parseModel } from 'utils/form';
 
 class TransactionsPage extends React.Component {
   handleDelete(transactionId, setLoading, refresh) {
@@ -43,6 +47,40 @@ class TransactionsPage extends React.Component {
     );
   }
 
+  handleImportClick() {
+    this.fileInput.click();
+  }
+
+  csvToJson(csv) {
+    const lines = csv.split('\n');
+
+    return lines.map(line => {
+      const currentline = line.split(',');
+      return {
+        concept: currentline[0],
+        date: currentline[1],
+        amount: currentline[2],
+        issuer: currentline[3],
+        bank_id: currentline[4],
+      };
+    });
+  }
+
+  handleImportFileContent(fileReader) {
+    const content = fileReader.result;
+    const transactions = this.csvToJson(content);
+
+    transactions.forEach(transaction =>
+      createTransaction(parseModel(transaction)),
+    );
+  }
+
+  handleImportFile(file) {
+    const fileReader = new FileReader();
+    fileReader.onloadend = e => this.handleImportFileContent(fileReader);
+    fileReader.readAsText(file);
+  }
+
   render() {
     return (
       <Page
@@ -51,15 +89,24 @@ class TransactionsPage extends React.Component {
       >
         <Row>
           <Col>
-            <Button
-              tag={Link}
-              to="/transactions/create"
-              color="success"
-              className="float-right"
-            >
-              <MdAdd />
-              New transaction
-            </Button>
+            <ButtonGroup className="float-right">
+              <Button tag={Link} to="/transactions/create" color="success">
+                <MdAdd />
+                New transaction
+              </Button>
+
+              <Button color="primary" onClick={() => this.handleImportClick()}>
+                <MdAdd />
+                Import transactions
+              </Button>
+            </ButtonGroup>
+            <input
+              type="file"
+              id="file"
+              style={{ display: 'none' }}
+              ref={input => (this.fileInput = input)}
+              onChange={e => this.handleImportFile(e.target.files[0])}
+            />
           </Col>
         </Row>
         <Row>
