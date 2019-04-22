@@ -2,11 +2,23 @@ defmodule Transactions.Service do
   require Ecto.Query
 
   def create(params) do
+    params_with_issuer_and_category = params
+    |> add_issuer_to_params
+
     %Transactions.Schema{}
-    |> Transactions.Schema.changeset(params)
+    |> Transactions.Schema.changeset(params_with_issuer_and_category)
     |> Transactions.Repo.insert()
     |> preload_result
     |> Utils.parse_result()
+  end
+
+  defp add_issuer_to_params(params) do
+    if Map.has_key?(params, "issuer_id") do
+      params
+    else
+      {:ok, issuer} = Issuers.Service.get_or_create_by_name(params["issuer"])
+      Map.put(params, "issuer_id", issuer.issuer_id)
+    end
   end
 
   def update(transaction_id, params) do

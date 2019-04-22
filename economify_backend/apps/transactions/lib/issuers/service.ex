@@ -45,4 +45,19 @@ defmodule Issuers.Service do
       _e in Ecto.Query.CastError -> {:bad_request}
     end
   end
+
+  def get_or_create_by_name(name) do
+    issuer = get_by_name_or_alias(name)
+
+    case issuer do
+      nil -> create(%{name: name})
+      _ -> {:ok, issuer}
+    end
+  end
+
+  defp get_by_name_or_alias(name) do
+    Ecto.Query.from(p in Issuers.Schema, where: p.name == ^name or fragment("? = ANY (?)", ^name, p.alias))
+    |> Ecto.Query.first
+    |> Transactions.Repo.one
+  end
 end
