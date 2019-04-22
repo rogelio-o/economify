@@ -2,6 +2,9 @@ import React from 'react';
 import { Alert, Form } from 'reactstrap';
 import Typography from 'components/Typography';
 import InputGroup from 'components/InputGroup';
+import InputGroupIssuers from 'components/InputGroupIssuers';
+import InputGroupCategories from 'components/InputGroupCategories';
+import InputGroupBanks from 'components/InputGroupBanks';
 import FormSubmitButton from 'components/FormSubmitButton';
 
 const renderMsgs = (msgs, color) => {
@@ -52,21 +55,21 @@ const TransactionForm = ({
         type="number"
         step="0.01"
       />
-      <InputGroup
+      <InputGroupBanks
         id="bank_id"
         label="Bank"
         model={model.bank_id}
         handleChange={handleChange}
         type="text"
       />
-      <InputGroup
+      <InputGroupIssuers
         id="issuer_id"
         label="Issuer"
         model={model.issuer_id}
         handleChange={handleChange}
         type="text"
       />
-      <InputGroup
+      <InputGroupCategories
         id="category_id"
         label="Category"
         model={model.category_id}
