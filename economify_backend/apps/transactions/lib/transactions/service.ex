@@ -13,7 +13,7 @@ defmodule Transactions.Service do
   end
 
   defp add_issuer_to_params(params) do
-    if Map.has_key?(params, "issuer_id") do
+    if Map.has_key?(params, "issuer_id") or not Map.has_key?(params, "issuer") do
       params
     else
       {:ok, issuer} = Issuers.Service.get_or_create_by_name(params["issuer"])
