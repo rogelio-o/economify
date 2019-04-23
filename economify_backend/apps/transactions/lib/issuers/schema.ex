@@ -17,4 +17,9 @@ defmodule Issuers.Schema do
     |> Ecto.Changeset.cast(params, [:name, :description, :alias])
     |> Ecto.Changeset.validate_required([:name])
   end
+
+  def set_alias(issuer, new_alias) do
+    issuer
+    |> Ecto.Changeset.cast(%{alias: new_alias}, [:alias])
+  end
 end

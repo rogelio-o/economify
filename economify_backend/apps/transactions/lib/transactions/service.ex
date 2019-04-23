@@ -76,6 +76,13 @@ defmodule Transactions.Service do
     end
   end
 
+  def update_issuer(new_issuer_id, old_issuer_id) do
+    Ecto.Query.from(p in Transactions.Schema, where: p.issuer_id == ^old_issuer_id)
+    |> Transactions.Repo.update_all(set: [issuer_id: new_issuer_id])
+
+    {:ok}
+  end
+
   defp preload_result(result) do
     case result do
       {:ok, transaction} ->

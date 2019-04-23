@@ -21,6 +21,18 @@ export const updateIssuer = (issuerId, issuerModel) => {
   }).then(response => parseResponse(issuerModel, response));
 };
 
+export const mergeIssuers = (issuerAId, issuerBId) => {
+  return fetch(
+    `http://localhost:4000/transactions/issuers/${issuerAId}/merge/${issuerBId}`,
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    },
+  ).then(response => parseResponse({}, response));
+};
+
 export const getIssuersPage = page => {
   return fetch(`http://localhost:4000/transactions/issuers?page=${page}`).then(
     response => {

@@ -3,7 +3,7 @@ export const parseModel = values => {
 
   for (let key of Object.keys(values)) {
     const value = values[key];
-    if (typeof value === 'object' && value !== null) {
+    if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
       model[key] = parseModel(value);
     } else {
       model[key] = {

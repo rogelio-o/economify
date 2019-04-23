@@ -60,4 +60,31 @@ defmodule Issuers.Service do
     |> Ecto.Query.first
     |> Transactions.Repo.one
   end
+
+  def merge(issuer_a_id, issuer_b_id) do
+    {:ok, issuer_a} = get_by_id(issuer_a_id)
+    {:ok, issuer_b} = get_by_id(issuer_b_id)
+
+    issuer_a_alias = case issuer_a.alias do
+      nil -> []
+      _ -> issuer_a.alias
+    end
+    issuer_b_alias = case issuer_b.alias do
+      nil -> []
+      _ -> issuer_b.alias
+    end
+    issuer_b_name = issuer_b.name
+    new_alias = issuer_a_alias ++ issuer_b_alias ++ [issuer_b_name]
+    changeset = Issuers.Schema.set_alias(issuer_a, new_alias)
+
+    {:ok} = Transactions.Service.update_issuer(issuer_a_id, issuer_b_id)
+
+    {:ok, issuer_a} = changeset
+    |> Transactions.Repo.update()
+
+    {:ok, _} = issuer_b
+    |> Transactions.Repo.delete()
+
+    {:ok, issuer_a}
+  end
 end

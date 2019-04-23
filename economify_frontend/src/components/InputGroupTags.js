@@ -10,7 +10,7 @@ const InputGroupTags = ({ id, label, model, handleChange, ...restProps }) => {
       <TagsInput
         name={id}
         id={id}
-        value={model.value}
+        value={model.value === null ? [] : model.value}
         onChange={event => handleChange(id, event)}
         invalid={model.errors.length > 0}
         {...restProps}
