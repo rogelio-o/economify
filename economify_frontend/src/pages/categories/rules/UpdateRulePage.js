@@ -2,6 +2,7 @@ import React from 'react';
 import { Row, Col, Card, CardBody } from 'reactstrap';
 import Page from 'components/Page';
 import CategoryRuleForm from 'components/CategoryRuleForm';
+import CategoryRuleParamsForm from 'components/CategoryRuleParamsForm';
 import {
   getCategoryRule,
   updateCategoryRule,
@@ -34,6 +35,21 @@ class UpdateRulePage extends React.Component {
         [name]: {
           value: value,
           errors: [],
+        },
+      },
+    });
+  }
+
+  handleParamChange(name, value) {
+    this.setState({
+      model: {
+        ...this.state.model,
+        params: {
+          ...this.state.model.params,
+          [name]: {
+            value: value,
+            errors: [],
+          },
         },
       },
     });
@@ -91,6 +107,20 @@ class UpdateRulePage extends React.Component {
               </CardBody>
             </Card>
           </Col>
+          {this.state.loadingModel ? null : (
+            <Col md="5">
+              <Card className="mb-3">
+                <CardBody>
+                  <CategoryRuleParamsForm
+                    model={this.state.model}
+                    handleChange={(name, value) =>
+                      this.handleParamChange(name, value)
+                    }
+                  />
+                </CardBody>
+              </Card>
+            </Col>
+          )}
         </Row>
       </Page>
     );
