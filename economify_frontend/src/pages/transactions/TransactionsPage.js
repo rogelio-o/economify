@@ -5,7 +5,7 @@ import { MdAdd, MdModeEdit, MdDelete } from 'react-icons/md';
 import Page from 'components/Page';
 import TransactionsTable from 'components/TransactionsTable';
 import {
-  createTransaction,
+  createTransactions,
   deleteTransaction,
 } from 'services/transactionsService';
 import { parseModel } from 'utils/form';
@@ -70,9 +70,7 @@ class TransactionsPage extends React.Component {
     const content = fileReader.result;
     const transactions = this.csvToJson(content);
 
-    transactions.forEach(transaction =>
-      createTransaction(parseModel(transaction)),
-    );
+    createTransactions(transactions.map(parseModel));
   }
 
   handleImportFile(file) {

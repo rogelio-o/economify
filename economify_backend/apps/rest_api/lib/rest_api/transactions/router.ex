@@ -25,6 +25,27 @@ defmodule RestApi.Transactions.Router do
     |> send_create_result_as_json(conn)
   end
 
+  post "/bulk" do
+    body = conn.body_params
+
+    if Map.has_key?(body, "transactions") do
+      results = body["transactions"]
+      |> Transactions.Interface.create_transactions()
+      |> Enum.map(&parse_bulk_result/1)
+
+      send_as_json(%{results: results}, 200, conn)
+    else
+      send_as_json(%{transactions: ["is required"]}, 422, conn)
+    end
+  end
+
+  defp parse_bulk_result(result) do
+    case result do
+      {:ok, transaction} -> %{success: true, result: transaction}
+      {_, errors} -> %{success: false, errors: errors}
+    end
+  end
+
   put "/:transaction_id" do
     conn.path_params["transaction_id"]
     |> Transactions.Interface.update_transaction(conn.body_params)

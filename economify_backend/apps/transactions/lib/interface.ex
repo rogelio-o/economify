@@ -1,5 +1,6 @@
 defmodule Transactions.Interface do
   defdelegate create_transaction(params), to: Transactions.Service, as: :create
+  defdelegate create_transactions(params), to: Transactions.Service, as: :create_bulk
   defdelegate update_transaction(transaction_id, params), to: Transactions.Service, as: :update
   defdelegate delete_transaction(transaction_id), to: Transactions.Service, as: :delete
 

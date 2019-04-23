@@ -13,6 +13,10 @@ defmodule Transactions.Service do
     |> Utils.parse_result()
   end
 
+  def create_bulk(transactions_params) do
+    Enum.map(transactions_params, &create/1)
+  end
+
   defp add_issuer_to_params(params) do
     if Map.has_key?(params, "issuer_id") or not Map.has_key?(params, "issuer") do
       params

@@ -1,4 +1,4 @@
-import { parseResponse } from 'utils/api';
+import { parseResponse, parseBulkResponse } from 'utils/api';
 import { unparseModel } from 'utils/form';
 
 export const createTransaction = transactionModel => {
@@ -9,6 +9,16 @@ export const createTransaction = transactionModel => {
     },
     body: JSON.stringify(unparseModel(transactionModel)),
   }).then(response => parseResponse(transactionModel, response));
+};
+
+export const createTransactions = transactionsModel => {
+  return fetch('http://localhost:4000/transactions/bulk', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ transactions: transactionsModel.map(unparseModel) }),
+  }).then(response => parseBulkResponse(transactionsModel, response));
 };
 
 export const updateTransaction = (transactionId, transactionModel) => {
