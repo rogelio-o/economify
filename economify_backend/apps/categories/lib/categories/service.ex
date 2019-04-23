@@ -54,7 +54,7 @@ defmodule Categories.Service do
         p in Rules.Schema,
         join: c in "categories",
         on: c.category_id == p.category_id,
-        where: c.type == ^category_type,
+        where: c.type == ^category_type or c.type == 2,
         order_by: [asc: p.priority]
       )
       |> Categories.Repo.all()

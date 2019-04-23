@@ -25,7 +25,6 @@ defmodule Categories.Schema do
   def get_type_by_amount(amount) do
     cond do
       amount > 0 -> 0
-      amount == 0 -> 2
       true -> 1
     end
   end
