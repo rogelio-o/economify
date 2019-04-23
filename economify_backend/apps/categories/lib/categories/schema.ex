@@ -1,5 +1,5 @@
 import EctoEnum
-defenum(TypeEnum, income: 0, expense: 1)
+defenum(TypeEnum, income: 0, expense: 1, not_computable: 2)
 
 defmodule Categories.Schema do
   use Ecto.Schema
@@ -20,5 +20,13 @@ defmodule Categories.Schema do
     |> Ecto.Changeset.cast(params, [:name, :description, :type])
     |> Ecto.Changeset.validate_required([:name, :type])
     |> Ecto.Changeset.validate_inclusion(:type, TypeEnum.__valid_values__())
+  end
+
+  def get_type_by_amount(amount) do
+    cond do
+      amount > 0 -> 0
+      amount == 0 -> 2
+      true -> 1
+    end
   end
 end

@@ -46,6 +46,7 @@ const CategoryForm = ({
       >
         <option value="income">income</option>
         <option value="expense">expense</option>
+        <option value="not_computable">not computable</option>
       </InputGroup>
       <InputGroup
         id="description"

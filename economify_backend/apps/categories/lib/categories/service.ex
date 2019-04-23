@@ -47,18 +47,17 @@ defmodule Categories.Service do
   end
 
   def categorize(transaction) do
-    category_type = cond do
-      transaction["amount"] >= 0 -> 0
-      true -> 1
-    end
+    category_type = Categories.Schema.get_type_by_amount(transaction["amount"])
 
-    rules = Ecto.Query.from(
-      p in Rules.Schema,
-      join: c in "categories", on: c.category_id == p.category_id,
-      where: c.type == ^category_type,
-      order_by: [asc: p.priority]
-    )
-    |> Categories.Repo.all
+    rules =
+      Ecto.Query.from(
+        p in Rules.Schema,
+        join: c in "categories",
+        on: c.category_id == p.category_id,
+        where: c.type == ^category_type,
+        order_by: [asc: p.priority]
+      )
+      |> Categories.Repo.all()
 
     rule = Enum.find(rules, fn rule -> Rules.Rule.get(rule).check(transaction, rule.params) end)
 
