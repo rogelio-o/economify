@@ -15,7 +15,7 @@ const InputGroup = ({
       <Input
         name={id}
         id={id}
-        value={model.value}
+        value={model.value === null ? '' : model.value}
         onChange={event => handleChange(id, event.target.value)}
         invalid={model.errors.length > 0}
         {...restProps}

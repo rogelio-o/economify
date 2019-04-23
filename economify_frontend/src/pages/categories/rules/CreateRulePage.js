@@ -4,10 +4,20 @@ import Page from 'components/Page';
 import CategoryRuleForm from 'components/CategoryRuleForm';
 import { createCategoryRule } from 'services/categoriesRulesService';
 import { parseModel } from 'utils/form';
+import CategoryRuleParamsForm from 'components/CategoryRuleParamsForm';
 
 class CreateRulePage extends React.Component {
   state = {
-    model: parseModel({ name: '', description: '', priority: 1 }),
+    model: parseModel({
+      name: '',
+      description: '',
+      priority: 1,
+      type: 'concept',
+      params: {
+        concept: '',
+        issuer_id: '',
+      },
+    }),
     errorsMsgs: [],
     loading: false,
   };
@@ -19,6 +29,21 @@ class CreateRulePage extends React.Component {
         [name]: {
           value: value,
           errors: [],
+        },
+      },
+    });
+  }
+
+  handleParamChange(name, value) {
+    this.setState({
+      model: {
+        ...this.state.model,
+        params: {
+          ...this.state.model.params,
+          [name]: {
+            value: value,
+            errors: [],
+          },
         },
       },
     });
@@ -62,10 +87,22 @@ class CreateRulePage extends React.Component {
                 <CategoryRuleForm
                   model={this.state.model}
                   loading={this.state.loading}
-                  handleChange={(name, event) => this.handleChange(name, event)}
+                  handleChange={(name, value) => this.handleChange(name, value)}
                   handleSubmit={() => this.handleSubmit()}
                   successMsgs={[]}
                   errorsMsgs={this.state.errorsMsgs}
+                />
+              </CardBody>
+            </Card>
+          </Col>
+          <Col md="5">
+            <Card className="mb-3">
+              <CardBody>
+                <CategoryRuleParamsForm
+                  model={this.state.model}
+                  handleChange={(name, value) =>
+                    this.handleParamChange(name, value)
+                  }
                 />
               </CardBody>
             </Card>

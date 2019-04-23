@@ -10,8 +10,8 @@ const renderMsgs = (msgs, color) => {
   } else {
     return (
       <Alert color={color}>
-        {msgs.map(msg => (
-          <Typography>{msg}</Typography>
+        {msgs.map((msg, index) => (
+          <Typography key={index}>{msg}</Typography>
         ))}
       </Alert>
     );
@@ -44,6 +44,16 @@ const CategoryRuleForm = ({
         handleChange={handleChange}
         type="textarea"
       />
+      <InputGroup
+        id="type"
+        label="Type"
+        model={model.type}
+        handleChange={handleChange}
+        type="select"
+      >
+        <option value="concept">Concept contains something</option>
+        <option value="issuer">Issuer is someone</option>
+      </InputGroup>
       <InputGroup
         id="priority"
         label="Priority"

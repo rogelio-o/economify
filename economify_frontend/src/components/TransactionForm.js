@@ -60,21 +60,18 @@ const TransactionForm = ({
         label="Bank"
         model={model.bank_id}
         handleChange={handleChange}
-        type="text"
       />
       <InputGroupIssuers
         id="issuer_id"
         label="Issuer"
         model={model.issuer_id}
         handleChange={handleChange}
-        type="text"
       />
       <InputGroupCategories
         id="category_id"
         label="Category"
         model={model.category_id}
         handleChange={handleChange}
-        type="text"
       />
       <FormSubmitButton loading={loading} handleSubmit={handleSubmit} />
     </Form>
