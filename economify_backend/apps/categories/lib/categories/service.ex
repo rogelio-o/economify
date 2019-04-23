@@ -48,8 +48,8 @@ defmodule Categories.Service do
 
   def categorize(transaction) do
     category_type = cond do
-      transaction.amount >= 0 -> :income
-      true -> :expense
+      transaction["amount"] >= 0 -> 0
+      true -> 1
     end
 
     rules = Ecto.Query.from(
@@ -62,6 +62,9 @@ defmodule Categories.Service do
 
     rule = Enum.find(rules, fn rule -> Rules.Rule.get(rule).check(transaction, rule.params) end)
 
-    rule.category_id
+    case rule do
+      nil -> nil
+      _ -> rule.category_id
+    end
   end
 end

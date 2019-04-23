@@ -59,7 +59,7 @@ class TransactionsPage extends React.Component {
       return {
         concept: currentline[0],
         date: currentline[1],
-        amount: currentline[2],
+        amount: parseFloat(currentline[2]),
         issuer: currentline[3],
         bank_id: currentline[4],
       };
