@@ -6,6 +6,8 @@ import re
 from datetime import datetime
 
 ISSUER_PATTERS = [
+    re.compile("TRANSACCION CONTACTLESS EN (.+)"),
+    re.compile("BIZUM DE (.+) CONCEPTO .+"),
     re.compile("COMPRA INTERNET EN (.+)"),
     re.compile("COMPRA PAGO MÓVIL EN (.+)"),
     re.compile("ANULACION COMPRA PAGO MÓVIL EN (.+)"),
