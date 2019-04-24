@@ -5,7 +5,7 @@ defmodule Transactions.Repo.Migrations.CreateTransactions do
     create table(:transactions, primary_key: false) do
       add(:transaction_id, :uuid, null: false, primary_key: true)
       add(:bank_id, :string, null: false)
-      add(:category_id, :string, null: false)
+      add(:category_id, :string, null: true)
       add(:status, StatusEnum.type(), null: false)
       add(:concept, :string, null: false)
       add(:amount, :float, null: false)

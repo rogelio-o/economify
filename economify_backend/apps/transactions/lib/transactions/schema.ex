@@ -25,7 +25,6 @@ defmodule Transactions.Schema do
     |> Ecto.Changeset.cast(params, [:bank_id, :category_id, :issuer_id, :concept, :amount, :date])
     |> Ecto.Changeset.validate_required([
       :bank_id,
-      :category_id,
       :issuer_id,
       :concept,
       :amount,
