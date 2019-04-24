@@ -59,7 +59,7 @@ class TransactionsTable extends React.Component {
                 <tr key={`row-${row.transaction_id}`}>
                   <td>{row.concept}</td>
                   <td>{row.date}</td>
-                  <td>{row.amount}</td>
+                  <td>{row.amount.toFixed(2)}€</td>
                   <td>{this.renderButtons(row)}</td>
                 </tr>
               ))}
