@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button, ButtonGroup, Row, Col, Card, CardBody } from 'reactstrap';
 import { MdAdd, MdModeEdit, MdDelete } from 'react-icons/md';
+import Papa from 'papaparse';
 import Page from 'components/Page';
 import TransactionsTable from 'components/TransactionsTable';
 import {
@@ -11,21 +12,24 @@ import {
 import { parseModel } from 'utils/form';
 
 class TransactionsPage extends React.Component {
-  handleDelete(transactionId, setLoading, refresh) {
+  _refresh = null;
+  _setLoading = null;
+
+  handleDelete(transactionId) {
     if (window.confirm('Are you sure you want to delete this entry?')) {
-      setLoading(true);
+      this._setLoading(true);
       deleteTransaction(transactionId)
         .then(() => {
-          refresh();
+          this._refresh();
         })
         .catch(err => {
-          setLoading(false);
+          this._setLoading(false);
           alert(err.message);
         });
     }
   }
 
-  renderButtons(row, setLoading, refresh) {
+  renderButtons(row) {
     return (
       <ButtonGroup className="mr-3 mb-3">
         <Button
@@ -37,9 +41,7 @@ class TransactionsPage extends React.Component {
         </Button>
         <Button
           color="danger"
-          onClick={e =>
-            this.handleDelete(row.transaction_id, setLoading, refresh)
-          }
+          onClick={e => this.handleDelete(row.transaction_id)}
         >
           <MdDelete />
         </Button>
@@ -52,16 +54,15 @@ class TransactionsPage extends React.Component {
   }
 
   csvToJson(csv) {
-    const lines = csv.split('\n');
+    const result = Papa.parse(csv);
 
-    return lines.map(line => {
-      const currentline = line.split(',');
+    return result.data.map(line => {
       return {
-        concept: currentline[0],
-        date: currentline[1],
-        amount: parseFloat(currentline[2]),
-        issuer: currentline[3],
-        bank_id: currentline[4],
+        concept: line[0],
+        date: line[1],
+        amount: line[2],
+        issuer: line[3],
+        bank_id: line[4],
       };
     });
   }
@@ -70,7 +71,18 @@ class TransactionsPage extends React.Component {
     const content = fileReader.result;
     const transactions = this.csvToJson(content);
 
-    createTransactions(transactions.map(parseModel));
+    createTransactions(transactions.map(parseModel))
+      .then(results => {
+        const errors = results.filter(r => !r.success);
+        if (errors.length > 0) {
+          console.log(errors);
+          alert(`${errors.length} transactions not added.`);
+        }
+        this._refresh();
+      })
+      .catch(error => {
+        alert(error.message);
+      });
   }
 
   handleImportFile(file) {
@@ -112,9 +124,9 @@ class TransactionsPage extends React.Component {
             <Card className="mb-3">
               <CardBody>
                 <TransactionsTable
-                  renderButtons={(row, setLoading, refresh) =>
-                    this.renderButtons(row, setLoading, refresh)
-                  }
+                  renderButtons={row => this.renderButtons(row)}
+                  setRefresh={refresh => (this._refresh = refresh)}
+                  setSetLoading={setLoading => (this._setLoading = setLoading)}
                 />
               </CardBody>
             </Card>

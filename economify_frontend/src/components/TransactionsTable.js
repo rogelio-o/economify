@@ -14,6 +14,9 @@ class TransactionsTable extends React.Component {
 
   componentDidMount() {
     this.loadPage(1);
+
+    this.props.setRefresh(() => this.refresh());
+    this.props.setSetLoading(loading => this.setLoading(loading));
   }
 
   loadPage(page) {
@@ -33,11 +36,7 @@ class TransactionsTable extends React.Component {
   }
 
   renderButtons(row) {
-    return this.props.renderButtons(
-      row,
-      loading => this.setLoading(loading),
-      () => this.refresh(),
-    );
+    return this.props.renderButtons(row);
   }
 
   render() {
