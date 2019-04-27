@@ -22,8 +22,8 @@ class CategoriesPage extends React.Component {
     }
   }
 
-  setPage(num) {
-    this.props.history.push(`/categories?page=${num}`);
+  setTableData({ page }) {
+    this.props.history.push(`/categories?page=${page}`);
   }
 
   renderButtons(row) {
@@ -67,7 +67,7 @@ class CategoriesPage extends React.Component {
               <CardBody>
                 <CategoriesTable
                   page={getQueryParam(this.props.location.search, 'page') || 1}
-                  setPage={num => this.setPage(num)}
+                  setTableData={this.setTableData.bind(this)}
                   setSetLoading={setLoading => (this._setLoading = setLoading)}
                   setRefresh={refresh => (this._refresh = refresh)}
                   renderButtons={row => this.renderButtons(row)}

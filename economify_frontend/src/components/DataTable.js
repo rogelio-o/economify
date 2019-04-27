@@ -42,14 +42,8 @@ class DataTable extends React.Component {
     },
   };
 
-  constructor(props) {
-    super(props);
-
-    this._filters = {};
-  }
-
   componentDidMount() {
-    this.loadPage(this.props.page, this._filters);
+    this.loadPage(this.props.page, this.props.filters);
 
     if (this.props.setSetLoading) {
       this.props.setSetLoading(this.setLoading.bind(this));
@@ -61,8 +55,11 @@ class DataTable extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.page !== prevProps.page) {
-      this.loadPage(this.props.page, this._filters);
+    if (
+      this.props.page !== prevProps.page ||
+      this.props.filters !== prevProps.filters
+    ) {
+      this.loadPage(this.props.page, this.props.filters);
     }
   }
 
@@ -74,12 +71,12 @@ class DataTable extends React.Component {
       .then(data => this.setState({ data, loading: false }));
   }
 
-  setPage(num) {
-    this.props.setPage(num);
+  setTableData(page, filters) {
+    this.props.setTableData({ page, filters });
   }
 
   refresh() {
-    this.loadPage(this.state.data.page_number, this._filters);
+    this.loadPage(this.props.page, this.props.filters);
   }
 
   setLoading(loading) {
@@ -87,13 +84,9 @@ class DataTable extends React.Component {
   }
 
   handleTableChange = (type, { page, filters }) => {
-    if (type === 'filter') {
-      this._filters = formatFilters(filters);
+    this.formattedFilters = formatFilters(filters);
 
-      this.loadPage(this.state.data.page_number, this._filters);
-    } else if (type === 'pagination') {
-      this.setPage(page);
-    }
+    this.setTableData(page, this.formattedFilters);
   };
 
   render() {

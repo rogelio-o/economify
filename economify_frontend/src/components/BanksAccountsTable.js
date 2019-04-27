@@ -38,7 +38,7 @@ class BanksAccountsTable extends React.Component {
         setSetLoading={this.props.setSetLoading}
         setRefresh={this.props.setRefresh}
         loadData={getBanksAccountsPage}
-        setPage={this.props.setPage}
+        setTableData={this.props.setTableData}
         columns={this.columns}
       />
     );

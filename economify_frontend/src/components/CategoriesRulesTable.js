@@ -42,7 +42,7 @@ class CategoriesRulesTable extends React.Component {
         setSetLoading={this.props.setSetLoading}
         setRefresh={this.props.setRefresh}
         loadData={page => getCategoriesRulesPage(this.props.categoryId, page)}
-        setPage={this.props.setPage}
+        setTableData={this.props.setTableData}
         columns={this.columns}
       />
     );

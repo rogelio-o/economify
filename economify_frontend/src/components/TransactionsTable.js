@@ -25,12 +25,18 @@ class TransactionsTable extends React.Component {
       {
         dataField: 'concept',
         text: 'Concepts',
-        filter: textFilter(),
+        filter: textFilter({
+          defaultValue: props.filters.concept,
+        }),
       },
       {
         dataField: 'date',
         text: 'Date',
         filter: dateFilter({
+          defaultValue: {
+            date: props.filters.date !== '' ? new Date(props.filters.date) : '',
+            comparator: props.filters.date_comparator,
+          },
           comparators: [Comparator.EQ],
           withoutEmptyComparatorOption: true,
         }),
@@ -74,7 +80,7 @@ class TransactionsTable extends React.Component {
         setSetLoading={this.props.setSetLoading}
         setRefresh={this.props.setRefresh}
         loadData={getTransactionsPage}
-        setPage={this.props.setPage}
+        setTableData={this.props.setTableData}
         columns={this.columns}
       />
     );

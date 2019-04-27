@@ -11,7 +11,7 @@ class IssuersTable extends React.Component {
       {
         dataField: 'name',
         text: 'Name',
-        filter: textFilter(),
+        filter: textFilter({ defaultValue: props.filters.name }),
       },
       {
         dataField: 'description',
@@ -37,10 +37,11 @@ class IssuersTable extends React.Component {
       <DataTable
         keyField="issuer_id"
         page={this.props.page}
+        filters={this.props.filters}
         setSetLoading={this.props.setSetLoading}
         setRefresh={this.props.setRefresh}
         loadData={getIssuersPage}
-        setPage={this.props.setPage}
+        setTableData={this.props.setTableData}
         columns={this.columns}
       />
     );

@@ -42,7 +42,7 @@ class CategoriesTable extends React.Component {
         setSetLoading={this.props.setSetLoading}
         setRefresh={this.props.setRefresh}
         loadData={getCategoriesPage}
-        setPage={this.props.setPage}
+        setTableData={this.props.setTableData}
         columns={this.columns}
       />
     );

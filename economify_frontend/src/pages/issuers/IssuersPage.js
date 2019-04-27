@@ -5,7 +5,7 @@ import { MdAdd, MdModeEdit, MdDelete } from 'react-icons/md';
 import Page from 'components/Page';
 import IssuersTable from 'components/IssuersTable';
 import { deleteIssuer } from 'services/issuersService';
-import { getQueryParam } from 'utils/query';
+import { getQueryParam, stringifyQuery } from 'utils/query';
 
 class IssuersPage extends React.Component {
   handleDelete(issuerId) {
@@ -35,8 +35,9 @@ class IssuersPage extends React.Component {
     );
   }
 
-  setPage(num) {
-    this.props.history.push(`/issuers?page=${num}`);
+  setTableData({ page, filters }) {
+    const filtersQuery = stringifyQuery(filters);
+    this.props.history.push(`/issuers?page=${page}&${filtersQuery}`);
   }
 
   render() {
@@ -61,7 +62,11 @@ class IssuersPage extends React.Component {
               <CardBody>
                 <IssuersTable
                   page={getQueryParam(this.props.location.search, 'page') || 1}
-                  setPage={num => this.setPage(num)}
+                  filters={{
+                    name:
+                      getQueryParam(this.props.location.search, 'name') || '',
+                  }}
+                  setTableData={this.setTableData.bind(this)}
                   setSetLoading={setLoading => (this._setLoading = setLoading)}
                   setRefresh={refresh => (this._refresh = refresh)}
                   renderButtons={row => this.renderButtons(row)}

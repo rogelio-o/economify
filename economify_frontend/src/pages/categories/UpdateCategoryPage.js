@@ -65,22 +65,22 @@ class UpdateCategoryPage extends React.Component {
       });
   }
 
-  handleDeleteRule(categoryRuleId, setLoading, refresh) {
+  handleDeleteRule(categoryRuleId) {
     if (window.confirm('Are you sure you want to delete this entry?')) {
       const categoryId = this.props.match.params.category_id;
-      setLoading(true);
+      this._setLoading(true);
       deleteCategoryRule(categoryId, categoryRuleId)
         .then(() => {
-          refresh();
+          this._refresh();
         })
         .catch(err => {
-          setLoading(false);
+          this._setLoading(false);
           alert(err.message);
         });
     }
   }
 
-  renderRulesButtons(row, setLoading, refresh) {
+  renderRulesButtons(row) {
     return (
       <ButtonGroup className="mr-3 mb-3">
         <Button
@@ -92,9 +92,7 @@ class UpdateCategoryPage extends React.Component {
         </Button>
         <Button
           color="danger"
-          onClick={e =>
-            this.handleDeleteRule(row.category_rule_id, setLoading, refresh)
-          }
+          onClick={e => this.handleDeleteRule(row.category_rule_id)}
         >
           <MdDelete />
         </Button>
@@ -102,9 +100,9 @@ class UpdateCategoryPage extends React.Component {
     );
   }
 
-  setPage(num) {
+  setTableData({ page }) {
     const categoryId = this.props.match.params.category_id;
-    this.props.history.push(`/categories/${categoryId}?rules_page=${num}`);
+    this.props.history.push(`/categories/${categoryId}?rules_page=${page}`);
   }
 
   render() {
@@ -166,12 +164,10 @@ class UpdateCategoryPage extends React.Component {
                   page={
                     getQueryParam(this.props.location.search, 'rules_page') || 1
                   }
-                  setPage={num => this.setPage(num)}
+                  setTableData={this.setTableData.bind(this)}
                   setSetLoading={setLoading => (this._setLoading = setLoading)}
                   setRefresh={refresh => (this._refresh = refresh)}
-                  renderButtons={(row, setLoading, refresh) =>
-                    this.renderRulesButtons(row, setLoading, refresh)
-                  }
+                  renderButtons={row => this.renderRulesButtons(row)}
                 />
               </CardBody>
             </Card>
