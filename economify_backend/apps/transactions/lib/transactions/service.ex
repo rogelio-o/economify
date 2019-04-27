@@ -69,7 +69,7 @@ defmodule Transactions.Service do
   defp add_concept_where_to_query(query, concept) do
     if concept do
       likeConcept = "%#{concept}%"
-      Ecto.Query.from(q in query, where: ilike(q.name, ^likeConcept))
+      Ecto.Query.from(q in query, where: ilike(q.concept, ^likeConcept))
     else
       query
     end
