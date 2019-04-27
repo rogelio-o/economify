@@ -1,22 +1,25 @@
-@import "variables";
+@import 'variables';
 
 // libraries
-@import "~bootstrap/scss/bootstrap.scss";
+@import '~bootstrap/scss/bootstrap.scss';
+@import '~react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+@import '~react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
+@import '~react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css';
 
 // base
-@import "base";
-@import "overrides";
-@import "extends";
-@import "animations";
-@import "utils/utils";
+@import 'base';
+@import 'overrides';
+@import 'extends';
+@import 'animations';
+@import 'utils/utils';
 
 // components
-@import "components/header";
-@import "components/sidebar";
-@import "components/content";
-@import "components/page";
-@import "components/widget";
-@import "components/pagination";
+@import 'components/header';
+@import 'components/sidebar';
+@import 'components/content';
+@import 'components/page';
+@import 'components/widget';
+@import 'components/pagination';
 
 // themes
-@import "themes/colors";
+@import 'themes/colors';

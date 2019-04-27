@@ -1,74 +1,49 @@
 import React from 'react';
-import { Table } from 'reactstrap';
 import { getIssuersPage } from 'services/issuersService';
-import Loading from 'components/Loading';
-import DataPagination from 'components/DataPagination';
+import DataTable from 'components/DataTable';
+import { textFilter } from 'react-bootstrap-table2-filter';
 
 class IssuersTable extends React.Component {
-  state = {
-    loading: true,
-    data: {
-      entries: [],
-    },
-  };
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
-    this.loadPage(1);
+    this.columns = [
+      {
+        dataField: 'name',
+        text: 'Name',
+        filter: textFilter(),
+      },
+      {
+        dataField: 'description',
+        text: 'Description',
+      },
+      {
+        dataField: 'button',
+        text: '',
+        formatter: this.renderButtons.bind(this),
+        headerStyle: (colum, colIndex) => {
+          return { width: '120px' };
+        },
+      },
+    ];
   }
 
-  loadPage(page) {
-    this.setState({ loading: true });
-
-    getIssuersPage(page).then(data => this.setState({ data, loading: false }));
-  }
-
-  refresh() {
-    this.loadPage(this.state.data.page_number);
-  }
-
-  setLoading(loading) {
-    this.setState({ loading });
-  }
-
-  renderButtons(row) {
-    return this.props.renderButtons(
-      row,
-      loading => this.setLoading(loading),
-      () => this.refresh(),
-    );
+  renderButtons(cell, row) {
+    return this.props.renderButtons(row);
   }
 
   render() {
-    if (this.state.loading) {
-      return <Loading />;
-    } else {
-      return (
-        <div>
-          <Table responsive>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.data.entries.map(row => (
-                <tr key={`row-${row.issuer_id}`}>
-                  <td>{row.name}</td>
-                  <td>{row.description}</td>
-                  <td>{this.renderButtons(row)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-          <DataPagination
-            data={this.state.data}
-            loadPage={page => this.loadPage(page)}
-          />
-        </div>
-      );
-    }
+    return (
+      <DataTable
+        keyField="issuer_id"
+        page={this.props.page}
+        setSetLoading={this.props.setSetLoading}
+        setRefresh={this.props.setRefresh}
+        loadData={getIssuersPage}
+        setPage={this.props.setPage}
+        columns={this.columns}
+      />
+    );
   }
 }
 

@@ -1,5 +1,6 @@
 import { parseResponse } from 'utils/api';
 import { unparseModel } from 'utils/form';
+import { stringifyQuery } from 'utils/query';
 
 export const createIssuer = issuerModel => {
   return fetch('http://localhost:4000/transactions/issuers', {
@@ -33,16 +34,17 @@ export const mergeIssuers = (issuerAId, issuerBId) => {
   ).then(response => parseResponse({}, response));
 };
 
-export const getIssuersPage = page => {
-  return fetch(`http://localhost:4000/transactions/issuers?page=${page}`).then(
-    response => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error(`Error ${response.status}`);
-      }
-    },
-  );
+export const getIssuersPage = (page, filters) => {
+  const filtersQuery = stringifyQuery(filters);
+  return fetch(
+    `http://localhost:4000/transactions/issuers?page=${page}&${filtersQuery}`,
+  ).then(response => {
+    if (response.ok) {
+      return response.json();
+    } else {
+      throw new Error(`Error ${response.status}`);
+    }
+  });
 };
 
 export const deleteIssuer = issuerId => {
