@@ -1,5 +1,6 @@
 import { parseResponse, parseBulkResponse } from 'utils/api';
 import { unparseModel } from 'utils/form';
+import { stringifyQuery } from 'utils/query';
 
 export const createTransaction = transactionModel => {
   return fetch('http://localhost:4000/transactions', {
@@ -31,16 +32,17 @@ export const updateTransaction = (transactionId, transactionModel) => {
   }).then(response => parseResponse(transactionModel, response));
 };
 
-export const getTransactionsPage = page => {
-  return fetch(`http://localhost:4000/transactions?page=${page}`).then(
-    response => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error(`Error ${response.status}`);
-      }
-    },
-  );
+export const getTransactionsPage = (page, filters) => {
+  const filtersQuery = stringifyQuery(filters);
+  return fetch(
+    `http://localhost:4000/transactions?page=${page}&${filtersQuery}`,
+  ).then(response => {
+    if (response.ok) {
+      return response.json();
+    } else {
+      throw new Error(`Error ${response.status}`);
+    }
+  });
 };
 
 export const deleteTransaction = transactionId => {

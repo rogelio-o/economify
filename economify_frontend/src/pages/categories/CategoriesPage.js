@@ -5,23 +5,28 @@ import { MdAdd, MdModeEdit, MdDelete } from 'react-icons/md';
 import Page from 'components/Page';
 import CategoriesTable from 'components/CategoriesTable';
 import { deleteCategory } from 'services/categoriesService';
+import { getQueryParam } from 'utils/query';
 
 class CategoriesPage extends React.Component {
-  handleDelete(categoryId, setLoading, refresh) {
+  handleDelete(categoryId) {
     if (window.confirm('Are you sure you want to delete this entry?')) {
-      setLoading(true);
+      this._setLoading(true);
       deleteCategory(categoryId)
         .then(() => {
-          refresh();
+          this._refresh();
         })
         .catch(err => {
-          setLoading(false);
+          this._setLoading(false);
           alert(err.message);
         });
     }
   }
 
-  renderButtons(row, setLoading, refresh) {
+  setPage(num) {
+    this.props.history.push(`/categories?page=${num}`);
+  }
+
+  renderButtons(row) {
     return (
       <ButtonGroup className="mr-3 mb-3">
         <Button tag={Link} to={`/categories/${row.category_id}`} color="info">
@@ -29,7 +34,7 @@ class CategoriesPage extends React.Component {
         </Button>
         <Button
           color="danger"
-          onClick={e => this.handleDelete(row.category_id, setLoading, refresh)}
+          onClick={e => this.handleDelete(row.category_id)}
         >
           <MdDelete />
         </Button>
@@ -61,9 +66,11 @@ class CategoriesPage extends React.Component {
             <Card className="mb-3">
               <CardBody>
                 <CategoriesTable
-                  renderButtons={(row, setLoading, refresh) =>
-                    this.renderButtons(row, setLoading, refresh)
-                  }
+                  page={getQueryParam(this.props.location.search, 'page') || 1}
+                  setPage={num => this.setPage(num)}
+                  setSetLoading={setLoading => (this._setLoading = setLoading)}
+                  setRefresh={refresh => (this._refresh = refresh)}
+                  renderButtons={row => this.renderButtons(row)}
                 />
               </CardBody>
             </Card>

@@ -10,6 +10,7 @@ import {
   deleteTransaction,
 } from 'services/transactionsService';
 import { parseModel } from 'utils/form';
+import { getQueryParam } from 'utils/query';
 
 class TransactionsPage extends React.Component {
   _refresh = null;
@@ -27,6 +28,10 @@ class TransactionsPage extends React.Component {
           alert(err.message);
         });
     }
+  }
+
+  setPage(num) {
+    this.props.history.push(`/transactions?page=${num}`);
   }
 
   renderButtons(row) {
@@ -124,9 +129,11 @@ class TransactionsPage extends React.Component {
             <Card className="mb-3">
               <CardBody>
                 <TransactionsTable
-                  renderButtons={row => this.renderButtons(row)}
-                  setRefresh={refresh => (this._refresh = refresh)}
+                  page={getQueryParam(this.props.location.search, 'page') || 1}
+                  setPage={num => this.setPage(num)}
                   setSetLoading={setLoading => (this._setLoading = setLoading)}
+                  setRefresh={refresh => (this._refresh = refresh)}
+                  renderButtons={row => this.renderButtons(row)}
                 />
               </CardBody>
             </Card>

@@ -4,10 +4,28 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory from 'react-bootstrap-table2-filter';
 
+const formatDate = date => {
+  return (
+    date.getUTCFullYear() +
+    '-' +
+    ('00' + (date.getUTCMonth() + 1)).slice(-2) +
+    '-' +
+    ('00' + date.getUTCDate()).slice(-2)
+  );
+};
+
 const formatFilters = filters => {
   const result = {};
   for (let key of Object.keys(filters)) {
-    result[key] = filters[key].filterVal;
+    const filter = filters[key];
+    if (filter.filterType === 'DATE') {
+      if (filter.filterVal.date !== null) {
+        result[key] = formatDate(filter.filterVal.date);
+        result[key + '_comparator'] = filter.filterVal.comparator;
+      }
+    } else {
+      result[key] = filter.filterVal;
+    }
   }
 
   return result;

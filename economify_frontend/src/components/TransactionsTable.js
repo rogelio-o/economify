@@ -1,77 +1,83 @@
 import React from 'react';
-import { Table } from 'reactstrap';
 import { getTransactionsPage } from 'services/transactionsService';
-import DataPagination from 'components/DataPagination';
-import Loading from 'components/Loading';
+import DataTable from 'components/DataTable';
+import {
+  textFilter,
+  dateFilter,
+  Comparator,
+} from 'react-bootstrap-table2-filter';
+
+const getClassNameByAmount = amount => {
+  if (amount === 0) {
+    return 'text-secondary';
+  } else if (amount > 0) {
+    return 'text-success';
+  } else {
+    return 'text-danger';
+  }
+};
 
 class TransactionsTable extends React.Component {
-  state = {
-    loading: true,
-    data: {
-      entries: [],
-    },
-  };
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
-    this.loadPage(1);
+    this.columns = [
+      {
+        dataField: 'concept',
+        text: 'Concepts',
+        filter: textFilter(),
+      },
+      {
+        dataField: 'date',
+        text: 'Date',
+        filter: dateFilter({
+          comparators: [Comparator.EQ],
+          withoutEmptyComparatorOption: true,
+        }),
+        formatter: cell => {
+          const date = new Date(cell);
 
-    this.props.setRefresh(() => this.refresh());
-    this.props.setSetLoading(loading => this.setLoading(loading));
+          return date.toLocaleDateString('es-ES');
+        },
+      },
+      {
+        dataField: 'amount',
+        text: 'Amount',
+        formatter: cell => {
+          return (
+            <span className={getClassNameByAmount(cell)}>
+              {Math.abs(cell).toFixed(2) + '€'}
+            </span>
+          );
+        },
+      },
+      {
+        dataField: 'button',
+        text: '',
+        formatter: this.renderButtons.bind(this),
+        headerStyle: (colum, colIndex) => {
+          return { width: '120px' };
+        },
+      },
+    ];
   }
 
-  loadPage(page) {
-    this.setState({ loading: true });
-
-    getTransactionsPage(page).then(data =>
-      this.setState({ data, loading: false }),
-    );
-  }
-
-  refresh() {
-    this.loadPage(this.state.data.page_number);
-  }
-
-  setLoading(loading) {
-    this.setState({ loading });
-  }
-
-  renderButtons(row) {
+  renderButtons(cell, row) {
     return this.props.renderButtons(row);
   }
 
   render() {
-    if (this.state.loading) {
-      return <Loading />;
-    } else {
-      return (
-        <div>
-          <Table responsive>
-            <thead>
-              <tr>
-                <th>Concept</th>
-                <th>Date</th>
-                <th>Amount</th>
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.data.entries.map(row => (
-                <tr key={`row-${row.transaction_id}`}>
-                  <td>{row.concept}</td>
-                  <td>{row.date}</td>
-                  <td>{row.amount.toFixed(2)}€</td>
-                  <td>{this.renderButtons(row)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-          <DataPagination
-            data={this.state.data}
-            loadPage={page => this.loadPage(page)}
-          />
-        </div>
-      );
-    }
+    return (
+      <DataTable
+        keyField="transaction_id"
+        page={this.props.page}
+        setSetLoading={this.props.setSetLoading}
+        setRefresh={this.props.setRefresh}
+        loadData={getTransactionsPage}
+        setPage={this.props.setPage}
+        columns={this.columns}
+      />
+    );
   }
 }
 

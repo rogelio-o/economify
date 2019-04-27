@@ -17,6 +17,7 @@ import { getCategory, updateCategory } from 'services/categoriesService';
 import { parseModel } from 'utils/form';
 import { deleteCategoryRule } from 'services/categoriesRulesService';
 import Loading from 'components/Loading';
+import { getQueryParam } from 'utils/query';
 
 class UpdateCategoryPage extends React.Component {
   state = {
@@ -101,6 +102,11 @@ class UpdateCategoryPage extends React.Component {
     );
   }
 
+  setPage(num) {
+    const categoryId = this.props.match.params.category_id;
+    this.props.history.push(`/categories/${categoryId}?rules_page=${num}`);
+  }
+
   render() {
     const categoryId = this.props.match.params.category_id;
 
@@ -157,6 +163,12 @@ class UpdateCategoryPage extends React.Component {
               <CardBody>
                 <CategoriesRulesTable
                   categoryId={categoryId}
+                  page={
+                    getQueryParam(this.props.location.search, 'rules_page') || 1
+                  }
+                  setPage={num => this.setPage(num)}
+                  setSetLoading={setLoading => (this._setLoading = setLoading)}
+                  setRefresh={refresh => (this._refresh = refresh)}
                   renderButtons={(row, setLoading, refresh) =>
                     this.renderRulesButtons(row, setLoading, refresh)
                   }

@@ -63,7 +63,7 @@ class IssuersPage extends React.Component {
                   page={getQueryParam(this.props.location.search, 'page') || 1}
                   setPage={num => this.setPage(num)}
                   setSetLoading={setLoading => (this._setLoading = setLoading)}
-                  setRefresh={setRefresh => (this._setRefresh = setRefresh)}
+                  setRefresh={refresh => (this._refresh = refresh)}
                   renderButtons={row => this.renderButtons(row)}
                 />
               </CardBody>
