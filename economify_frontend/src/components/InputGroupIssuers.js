@@ -7,6 +7,7 @@ import IssuersTable from 'components/IssuersTable';
 class InputGroupIssuers extends React.Component {
   state = {
     open: false,
+    page: 1,
   };
 
   toggleOpen() {
@@ -26,6 +27,10 @@ class InputGroupIssuers extends React.Component {
         </Button>
       </ButtonGroup>
     );
+  }
+
+  setPage(page) {
+    this.setState({ page });
   }
 
   render() {
@@ -48,7 +53,11 @@ class InputGroupIssuers extends React.Component {
         >
           <ModalHeader toggle={() => this.toggleOpen()}>Issuers</ModalHeader>
           <ModalBody>
-            <IssuersTable renderButtons={row => this.renderButtons(row)} />
+            <IssuersTable
+              page={this.state.page}
+              setPage={num => this.setPage(num)}
+              renderButtons={row => this.renderButtons(row)}
+            />
           </ModalBody>
         </Modal>
       </InputGroupBase>
