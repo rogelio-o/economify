@@ -13,7 +13,8 @@ defmodule RestApi.Transactions.Router do
       page,
       page_size,
       %{
-        concept: conn.params["concept"]
+        concept: conn.params["concept"],
+        date: conn.params["date"]
       }
     )
     |> send_as_json(200, conn)
