@@ -28,9 +28,21 @@ defmodule Issuers.Service do
     end
   end
 
-  def get_all_paginated(page, page_size) do
-    Ecto.Query.from(p in Issuers.Schema, order_by: [asc: p.name])
+  def get_all_paginated(page, page_size, params) do
+    query = Ecto.Query.from(p in Issuers.Schema, order_by: [asc: p.name])
+    query = add_name_where_to_query(query, params.name)
+
+    query
     |> Transactions.Repo.paginate(page: page, page_size: page_size)
+  end
+
+  defp add_name_where_to_query(query, name) do
+    if name do
+      likeName = "%#{name}%"
+      Ecto.Query.from(q in query, where: ilike(q.name, ^likeName))
+    else
+      query
+    end
   end
 
   def get_by_id(issuer_id) do
@@ -56,34 +68,42 @@ defmodule Issuers.Service do
   end
 
   defp get_by_name_or_alias(name) do
-    Ecto.Query.from(p in Issuers.Schema, where: p.name == ^name or fragment("? = ANY (?)", ^name, p.alias))
-    |> Ecto.Query.first
-    |> Transactions.Repo.one
+    Ecto.Query.from(p in Issuers.Schema,
+      where: p.name == ^name or fragment("? = ANY (?)", ^name, p.alias)
+    )
+    |> Ecto.Query.first()
+    |> Transactions.Repo.one()
   end
 
   def merge(issuer_a_id, issuer_b_id) do
     {:ok, issuer_a} = get_by_id(issuer_a_id)
     {:ok, issuer_b} = get_by_id(issuer_b_id)
 
-    issuer_a_alias = case issuer_a.alias do
-      nil -> []
-      _ -> issuer_a.alias
-    end
-    issuer_b_alias = case issuer_b.alias do
-      nil -> []
-      _ -> issuer_b.alias
-    end
+    issuer_a_alias =
+      case issuer_a.alias do
+        nil -> []
+        _ -> issuer_a.alias
+      end
+
+    issuer_b_alias =
+      case issuer_b.alias do
+        nil -> []
+        _ -> issuer_b.alias
+      end
+
     issuer_b_name = issuer_b.name
     new_alias = issuer_a_alias ++ issuer_b_alias ++ [issuer_b_name]
     changeset = Issuers.Schema.set_alias(issuer_a, new_alias)
 
     {:ok} = Transactions.Service.update_issuer(issuer_a_id, issuer_b_id)
 
-    {:ok, issuer_a} = changeset
-    |> Transactions.Repo.update()
+    {:ok, issuer_a} =
+      changeset
+      |> Transactions.Repo.update()
 
-    {:ok, _} = issuer_b
-    |> Transactions.Repo.delete()
+    {:ok, _} =
+      issuer_b
+      |> Transactions.Repo.delete()
 
     {:ok, issuer_a}
   end

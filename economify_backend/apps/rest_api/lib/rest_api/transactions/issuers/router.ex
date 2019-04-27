@@ -9,7 +9,11 @@ defmodule RestApi.Transactions.Issuers.Router do
     page = get_page(conn)
     page_size = get_page_size(conn, "5")
 
-    Transactions.Interface.get_issuers_all_paginated(page, page_size)
+    Transactions.Interface.get_issuers_all_paginated(
+      page,
+      page_size,
+      %{name: conn.params["name"]}
+    )
     |> send_as_json(200, conn)
   end
 
@@ -32,8 +36,9 @@ defmodule RestApi.Transactions.Issuers.Router do
   end
 
   put "/:issuer_a_id/merge/:issuer_b_id" do
-    {:ok, issuer_a} = conn.path_params["issuer_a_id"]
-    |> Transactions.Interface.merge_issuers(conn.path_params["issuer_b_id"])
+    {:ok, issuer_a} =
+      conn.path_params["issuer_a_id"]
+      |> Transactions.Interface.merge_issuers(conn.path_params["issuer_b_id"])
 
     send_as_json(issuer_a, 200, conn)
   end

@@ -14,7 +14,7 @@ defmodule Transactions.Interface do
   defdelegate update_issuer(issuer_id, params), to: Issuers.Service, as: :update
   defdelegate delete_issuer(issuer_id), to: Issuers.Service, as: :delete
 
-  defdelegate get_issuers_all_paginated(page, page_size),
+  defdelegate get_issuers_all_paginated(page, page_size, params),
     to: Issuers.Service,
     as: :get_all_paginated
 
