@@ -29,8 +29,9 @@ defmodule Issuers.Service do
   end
 
   def get_all_paginated(page, page_size, params) do
-    query = Ecto.Query.from(p in Issuers.Schema, order_by: [asc: p.name])
-    query = add_name_where_to_query(query, params.name)
+    query =
+      Ecto.Query.from(p in Issuers.Schema, order_by: [asc: p.name])
+      |> add_name_where_to_query(params.name)
 
     query
     |> Transactions.Repo.paginate(page: page, page_size: page_size)

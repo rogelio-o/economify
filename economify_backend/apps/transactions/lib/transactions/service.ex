@@ -2,9 +2,10 @@ defmodule Transactions.Service do
   require Ecto.Query
 
   def create(params) do
-    params_with_issuer_and_category = params
-    |> add_issuer_to_params
-    |> categorize
+    params_with_issuer_and_category =
+      params
+      |> add_issuer_to_params
+      |> categorize
 
     %Transactions.Schema{}
     |> Transactions.Schema.changeset(params_with_issuer_and_category)
@@ -55,9 +56,31 @@ defmodule Transactions.Service do
     end
   end
 
-  def get_all_paginated(page, page_size) do
-    Ecto.Query.from(p in Transactions.Schema, order_by: [desc: p.date], preload: [:issuer])
+  def get_all_paginated(page, page_size, params) do
+    query =
+      Ecto.Query.from(p in Transactions.Schema, order_by: [desc: p.date], preload: [:issuer])
+      |> add_concept_where_to_query(params.concept)
+      |> add_date_where_to_query(params.date)
+
+    query
     |> Transactions.Repo.paginate(page: page, page_size: page_size)
+  end
+
+  defp add_concept_where_to_query(query, concept) do
+    if concept do
+      likeConcept = "%#{concept}%"
+      Ecto.Query.from(q in query, where: ilike(q.name, ^likeConcept))
+    else
+      query
+    end
+  end
+
+  defp add_date_where_to_query(query, date) do
+    if date do
+      Ecto.Query.from(q in query, where: q.date == ^date)
+    else
+      query
+    end
   end
 
   def get_by_id(transaction_id) do

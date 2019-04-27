@@ -4,7 +4,7 @@ defmodule Transactions.Interface do
   defdelegate update_transaction(transaction_id, params), to: Transactions.Service, as: :update
   defdelegate delete_transaction(transaction_id), to: Transactions.Service, as: :delete
 
-  defdelegate get_transactions_all_paginated(page, page_size),
+  defdelegate get_transactions_all_paginated(page, page_size, params),
     to: Transactions.Service,
     as: :get_all_paginated
 

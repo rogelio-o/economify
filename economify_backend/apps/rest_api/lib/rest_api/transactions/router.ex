@@ -9,7 +9,13 @@ defmodule RestApi.Transactions.Router do
     page = get_page(conn)
     page_size = get_page_size(conn, "5")
 
-    Transactions.Interface.get_transactions_all_paginated(page, page_size)
+    Transactions.Interface.get_transactions_all_paginated(
+      page,
+      page_size,
+      %{
+        concept: conn.params["concept"]
+      }
+    )
     |> send_as_json(200, conn)
   end
 
@@ -29,9 +35,10 @@ defmodule RestApi.Transactions.Router do
     body = conn.body_params
 
     if Map.has_key?(body, "transactions") do
-      results = body["transactions"]
-      |> Transactions.Interface.create_transactions()
-      |> Enum.map(&parse_bulk_result/1)
+      results =
+        body["transactions"]
+        |> Transactions.Interface.create_transactions()
+        |> Enum.map(&parse_bulk_result/1)
 
       send_as_json(%{results: results}, 200, conn)
     else
