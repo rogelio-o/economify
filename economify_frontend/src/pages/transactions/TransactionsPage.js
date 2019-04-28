@@ -1,13 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button, ButtonGroup, Row, Col, Card, CardBody } from 'reactstrap';
-import { MdAdd, MdModeEdit, MdDelete } from 'react-icons/md';
+import { MdAdd, MdModeEdit, MdDelete, MdRefresh } from 'react-icons/md';
 import Papa from 'papaparse';
 import Page from 'components/Page';
 import TransactionsTable from 'components/TransactionsTable';
 import {
   createTransactions,
   deleteTransaction,
+  recategorizeTransactions,
 } from 'services/transactionsService';
 import { parseModel } from 'utils/form';
 import { getQueryParam, stringifyQuery } from 'utils/query';
@@ -97,6 +98,15 @@ class TransactionsPage extends React.Component {
     fileReader.readAsText(file);
   }
 
+  handleRecategorizeClick() {
+    recategorizeTransactions()
+      .then(() => {
+        this._refresh();
+        alert('Recategorized successfully.');
+      })
+      .catch(() => alert('Error recategorizing.'));
+  }
+
   render() {
     return (
       <Page
@@ -114,6 +124,14 @@ class TransactionsPage extends React.Component {
               <Button color="primary" onClick={() => this.handleImportClick()}>
                 <MdAdd />
                 Import transactions
+              </Button>
+
+              <Button
+                color="danger"
+                onClick={() => this.handleRecategorizeClick()}
+              >
+                <MdRefresh />
+                Recategorize
               </Button>
             </ButtonGroup>
             <input

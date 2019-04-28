@@ -71,3 +71,15 @@ export const getTransaction = transactionId => {
     },
   );
 };
+
+export const recategorizeTransactions = () => {
+  return fetch('http://localhost:4000/transactions/recategorize', {
+    method: 'POST',
+  }).then(response => {
+    if (response.ok) {
+      return;
+    } else {
+      throw new Error(`Error ${response.status}`);
+    }
+  });
+};
