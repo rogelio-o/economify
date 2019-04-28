@@ -47,6 +47,12 @@ defmodule RestApi.Transactions.Router do
     end
   end
 
+  post "/recategorize" do
+    Transactions.Interface.recategorize_all()
+
+    send_empty(204, conn)
+  end
+
   defp parse_bulk_result(result) do
     case result do
       {:ok, transaction} -> %{success: true, result: transaction}

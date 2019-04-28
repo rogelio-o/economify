@@ -106,6 +106,17 @@ defmodule Transactions.Service do
     {:ok}
   end
 
+  def recategorize_all() do
+    Ecto.Query.from(p in Transactions.Schema, order_by: [desc: p.date])
+    |> Enum.map(&recategorize_transaction/1)
+  end
+
+  defp recategorize_transaction(transaction) do
+    transaction
+    |> categorize()
+    |> Transactions.Repo.update()
+  end
+
   defp preload_result(result) do
     case result do
       {:ok, transaction} ->

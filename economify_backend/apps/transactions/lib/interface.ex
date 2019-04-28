@@ -9,6 +9,7 @@ defmodule Transactions.Interface do
     as: :get_all_paginated
 
   defdelegate get_transaction_by_id(transaction_id), to: Transactions.Service, as: :get_by_id
+  defdelegate recategorize_all(), to: Transactions.Service
 
   defdelegate create_issuer(params), to: Issuers.Service, as: :create
   defdelegate update_issuer(issuer_id, params), to: Issuers.Service, as: :update
