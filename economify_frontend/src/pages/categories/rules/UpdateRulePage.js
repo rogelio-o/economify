@@ -74,6 +74,8 @@ class UpdateRulePage extends React.Component {
   }
 
   render() {
+    const categoryId = this.props.match.params.category_id;
+
     return (
       <Page
         title="Update Rule"
@@ -85,6 +87,8 @@ class UpdateRulePage extends React.Component {
             active: true,
           },
         ]}
+        history={this.props.history}
+        goBackUrl={`/categories/${categoryId}`}
       >
         <Row>
           <Col>

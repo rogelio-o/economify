@@ -47,6 +47,7 @@ class CategoriesPage extends React.Component {
       <Page
         title="Categories"
         breadcrumbs={[{ name: 'Categories', active: true }]}
+        history={this.props.history}
       >
         <Row>
           <Col>

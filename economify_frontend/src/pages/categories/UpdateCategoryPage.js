@@ -118,6 +118,8 @@ class UpdateCategoryPage extends React.Component {
             active: true,
           },
         ]}
+        history={this.props.history}
+        goBackUrl={`/categories`}
       >
         <Row>
           <Col>

@@ -12,6 +12,8 @@ class CreateIssuerPage extends React.Component {
     loading: false,
   };
 
+  _goBackUrl = window.sessionStorage.getItem('ISSUERS_PAGE') || `/issuers`;
+
   handleChange(name, value) {
     this.setState({
       model: {
@@ -44,6 +46,8 @@ class CreateIssuerPage extends React.Component {
       <Page
         title="Create Issuer"
         breadcrumbs={[{ name: 'Issuers' }, { name: 'Create', active: true }]}
+        history={this.props.history}
+        goBackUrl={this._goBackUrl}
       >
         <Row>
           <Col>

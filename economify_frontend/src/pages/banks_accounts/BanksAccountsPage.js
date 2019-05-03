@@ -51,6 +51,7 @@ class BanksAccountsPage extends React.Component {
       <Page
         title="Bank Accounts"
         breadcrumbs={[{ name: 'Bank Accounts', active: true }]}
+        history={this.props.history}
       >
         <Row>
           <Col>

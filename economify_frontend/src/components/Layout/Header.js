@@ -1,6 +1,6 @@
 import React from 'react';
-import { MdClearAll } from 'react-icons/md';
-import { Button, Nav, Navbar } from 'reactstrap';
+import { MdClearAll, MdKeyboardArrowLeft } from 'react-icons/md';
+import { Button, ButtonGroup, Nav, Navbar } from 'reactstrap';
 import bn from 'utils/bemnames';
 
 const bem = bn.create('header');
@@ -16,12 +16,24 @@ class Header extends React.Component {
   };
 
   render() {
+    const goBackUrl = this.props.goBackUrl;
+
     return (
       <Navbar light expand className={bem.b('bg-white')}>
         <Nav navbar className="mr-2">
-          <Button outline onClick={this.handleSidebarControlButton}>
-            <MdClearAll size={25} />
-          </Button>
+          <ButtonGroup>
+            <Button outline onClick={this.handleSidebarControlButton}>
+              <MdClearAll size={25} />
+            </Button>
+            {goBackUrl ? (
+              <Button
+                outline
+                onClick={() => this.props.history.push(goBackUrl)}
+              >
+                <MdKeyboardArrowLeft size={25} />
+              </Button>
+            ) : null}
+          </ButtonGroup>
         </Nav>
         <Nav navbar />
 

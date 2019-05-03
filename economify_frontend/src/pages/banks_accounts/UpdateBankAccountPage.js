@@ -66,6 +66,8 @@ class UpdateBankAccountPage extends React.Component {
             active: true,
           },
         ]}
+        history={this.props.history}
+        goBackUrl={`/banks/accounts`}
       >
         <Row>
           <Col>

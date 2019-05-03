@@ -19,6 +19,8 @@ class UpdateIssuerPage extends React.Component {
     loadingModel: true,
   };
 
+  _goBackUrl = window.sessionStorage.getItem('ISSUERS_PAGE') || `/issuers`;
+
   componentDidMount() {
     this.load();
   }
@@ -118,6 +120,8 @@ class UpdateIssuerPage extends React.Component {
             active: true,
           },
         ]}
+        history={this.props.history}
+        goBackUrl={this._goBackUrl}
       >
         <Row>
           <Col>

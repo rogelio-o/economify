@@ -46,6 +46,8 @@ class CreateCategoryPage extends React.Component {
       <Page
         title="Create Category"
         breadcrumbs={[{ name: 'Categories' }, { name: 'Create', active: true }]}
+        history={this.props.history}
+        goBackUrl={`/categories`}
       >
         <Row>
           <Col>

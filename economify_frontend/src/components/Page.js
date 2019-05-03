@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'utils/propTypes';
+import Header from 'components/Layout/Header';
 
 import bn from 'utils/bemnames';
 
@@ -15,34 +16,39 @@ const Page = ({
   tag: Tag,
   className,
   children,
+  history,
+  goBackUrl,
   ...restProps
 }) => {
   const classes = bem.b('px-3', className);
 
   return (
-    <Tag className={classes} {...restProps}>
-      <div className={bem.e('header')}>
-        {title && typeof title === 'string' ? (
-          <Typography type="h1" className={bem.e('title')}>
-            {title}
-          </Typography>
-        ) : (
+    <div>
+      <Header history={history} goBackUrl={goBackUrl} />
+      <Tag className={classes} {...restProps}>
+        <div className={bem.e('header')}>
+          {title && typeof title === 'string' ? (
+            <Typography type="h1" className={bem.e('title')}>
+              {title}
+            </Typography>
+          ) : (
             title
           )}
-        {breadcrumbs && (
-          <Breadcrumb className={bem.e('breadcrumb')}>
-            <BreadcrumbItem>Home</BreadcrumbItem>
-            {breadcrumbs.length &&
-              breadcrumbs.map(({ name, active }, index) => (
-                <BreadcrumbItem key={index} active={active}>
-                  {name}
-                </BreadcrumbItem>
-              ))}
-          </Breadcrumb>
-        )}
-      </div>
-      {children}
-    </Tag>
+          {breadcrumbs && (
+            <Breadcrumb className={bem.e('breadcrumb')}>
+              <BreadcrumbItem>Home</BreadcrumbItem>
+              {breadcrumbs.length &&
+                breadcrumbs.map(({ name, active }, index) => (
+                  <BreadcrumbItem key={index} active={active}>
+                    {name}
+                  </BreadcrumbItem>
+                ))}
+            </Breadcrumb>
+          )}
+        </div>
+        {children}
+      </Tag>
+    </div>
   );
 };
 
@@ -55,7 +61,7 @@ Page.propTypes = {
     PropTypes.shape({
       name: PropTypes.string,
       active: PropTypes.bool,
-    })
+    }),
   ),
 };
 

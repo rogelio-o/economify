@@ -8,6 +8,22 @@ import { deleteIssuer } from 'services/issuersService';
 import { getQueryParam, stringifyQuery } from 'utils/query';
 
 class IssuersPage extends React.Component {
+  constructor(props) {
+    super(props);
+
+    window.sessionStorage.setItem(
+      'ISSUERS_PAGE',
+      props.location.pathname + props.location.search,
+    );
+  }
+
+  componentDidUpdate() {
+    window.sessionStorage.setItem(
+      'ISSUERS_PAGE',
+      this.props.location.pathname + this.props.location.search,
+    );
+  }
+
   handleDelete(issuerId) {
     if (window.confirm('Are you sure you want to delete this entry?')) {
       this._setLoading(true);
@@ -37,12 +53,19 @@ class IssuersPage extends React.Component {
 
   setTableData({ page, filters }) {
     const filtersQuery = stringifyQuery(filters);
-    this.props.history.push(`/issuers?page=${page}&${filtersQuery}`);
+    const url = `/issuers?page=${page}&${filtersQuery}`;
+
+    window.sessionStorage.setItem('ISSUERS_PAGE', url);
+    this.props.history.push(url);
   }
 
   render() {
     return (
-      <Page title="Issuers" breadcrumbs={[{ name: 'Issuers', active: true }]}>
+      <Page
+        title="Issuers"
+        breadcrumbs={[{ name: 'Issuers', active: true }]}
+        history={this.props.history}
+      >
         <Row>
           <Col>
             <Button

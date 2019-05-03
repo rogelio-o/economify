@@ -17,6 +17,22 @@ class TransactionsPage extends React.Component {
   _refresh = null;
   _setLoading = null;
 
+  constructor(props) {
+    super(props);
+
+    window.sessionStorage.setItem(
+      'TRANSACTIONS_PAGE',
+      props.location.pathname + props.location.search,
+    );
+  }
+
+  componentDidUpdate() {
+    window.sessionStorage.setItem(
+      'TRANSACTIONS_PAGE',
+      this.props.location.pathname + this.props.location.search,
+    );
+  }
+
   handleDelete(transactionId) {
     if (window.confirm('Are you sure you want to delete this entry?')) {
       this._setLoading(true);
@@ -33,7 +49,9 @@ class TransactionsPage extends React.Component {
 
   setTableData({ page, filters }) {
     const filtersQuery = stringifyQuery(filters);
-    this.props.history.push(`/transactions?page=${page}&${filtersQuery}`);
+    const url = `/transactions?page=${page}&${filtersQuery}`;
+
+    this.props.history.push(url);
   }
 
   renderButtons(row) {
@@ -112,6 +130,7 @@ class TransactionsPage extends React.Component {
       <Page
         title="Transactions"
         breadcrumbs={[{ name: 'Transactions', active: true }]}
+        history={this.props.history}
       >
         <Row>
           <Col>

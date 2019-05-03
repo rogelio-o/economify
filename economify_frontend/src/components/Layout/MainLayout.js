@@ -1,4 +1,4 @@
-import { Content, Footer, Header, Sidebar } from 'components/Layout';
+import { Content, Footer, Sidebar } from 'components/Layout';
 import React from 'react';
 
 class MainLayout extends React.Component {
@@ -60,7 +60,6 @@ class MainLayout extends React.Component {
       <main className="cr-app bg-light">
         <Sidebar />
         <Content fluid onClick={this.handleContentClick}>
-          <Header />
           {children}
           <Footer />
         </Content>

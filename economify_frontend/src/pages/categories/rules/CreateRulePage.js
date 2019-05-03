@@ -71,6 +71,8 @@ class CreateRulePage extends React.Component {
   }
 
   render() {
+    const categoryId = this.props.match.params.category_id;
+
     return (
       <Page
         title="Create Rule"
@@ -79,6 +81,8 @@ class CreateRulePage extends React.Component {
           { name: 'Rules' },
           { name: 'Create', active: true },
         ]}
+        history={this.props.history}
+        goBackUrl={`/categories/${categoryId}`}
       >
         <Row>
           <Col>

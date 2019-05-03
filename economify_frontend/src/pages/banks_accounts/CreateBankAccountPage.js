@@ -49,6 +49,8 @@ class CreateBankAccountPage extends React.Component {
           { name: 'Banks Accounts' },
           { name: 'Create', active: true },
         ]}
+        history={this.props.history}
+        goBackUrl={`/banks/accounts`}
       >
         <Row>
           <Col>
