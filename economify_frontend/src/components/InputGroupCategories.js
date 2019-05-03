@@ -7,7 +7,7 @@ import CategoriesTable from 'components/CategoriesTable';
 class InputGroupCategories extends React.Component {
   state = {
     open: false,
-    page: 1,
+    tableData: { page: 1 },
   };
 
   toggleOpen() {
@@ -29,8 +29,8 @@ class InputGroupCategories extends React.Component {
     );
   }
 
-  setPage(page) {
-    this.setState({ page });
+  setTableData(tableData) {
+    this.setState({ tableData });
   }
 
   render() {
@@ -54,8 +54,8 @@ class InputGroupCategories extends React.Component {
           <ModalHeader toggle={() => this.toggleOpen()}>Categories</ModalHeader>
           <ModalBody>
             <CategoriesTable
-              page={this.state.page}
-              setPage={num => this.setPage(num)}
+              page={this.state.tableData.page}
+              setTableData={this.setTableData.bind(this)}
               renderButtons={row => this.renderButtons(row)}
             />
           </ModalBody>

@@ -7,7 +7,7 @@ import BanksAccountsTable from 'components/BanksAccountsTable';
 class InputGroupBanks extends React.Component {
   state = {
     open: false,
-    page: 1,
+    tableData: { page: 1 },
   };
 
   toggleOpen() {
@@ -29,8 +29,8 @@ class InputGroupBanks extends React.Component {
     );
   }
 
-  setPage(page) {
-    this.setState({ page });
+  setTableData(tableData) {
+    this.setState({ tableData });
   }
 
   render() {
@@ -56,8 +56,8 @@ class InputGroupBanks extends React.Component {
           </ModalHeader>
           <ModalBody>
             <BanksAccountsTable
-              page={this.state.page}
-              setPage={num => this.setPage(num)}
+              page={this.state.tableData.page}
+              setTableData={this.setTableData.bind(this)}
               renderButtons={row => this.renderButtons(row)}
             />
           </ModalBody>
