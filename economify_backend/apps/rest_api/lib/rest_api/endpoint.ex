@@ -16,6 +16,7 @@ defmodule RestApi.Endpoint do
   plug(:dispatch)
 
   forward("/transactions/issuers", to: RestApi.Transactions.Issuers.Router)
+  forward("/transactions/statistics", to: RestApi.Transactions.Statistics.Router)
   forward("/transactions", to: RestApi.Transactions.Router)
 
   forward("/banks/accounts", to: RestApi.Banks.Accounts.Router)
