@@ -5,10 +5,10 @@ defmodule Transactions.Service do
     params_with_issuer_and_category =
       params
       |> add_issuer_to_params
-      |> categorize
 
     %Transactions.Schema{}
     |> Transactions.Schema.changeset(params_with_issuer_and_category)
+    |> categorize_if_no_category
     |> Transactions.Repo.insert()
     |> preload_result
     |> Utils.parse_result()
@@ -27,12 +27,17 @@ defmodule Transactions.Service do
     end
   end
 
-  defp categorize(params) do
-    if Map.has_key?(params, "category_id") do
-      params
+  defp categorize_if_no_category(transaction_changeset) do
+    transaction = Ecto.Changeset.apply_changes(transaction_changeset)
+    if transaction.category_id != nil and transaction.category_id != "" do
+      transaction_changeset
     else
-      Map.put(params, "category_id", Categories.Interface.categorize(params))
+      categorize(transaction_changeset, transaction)
     end
+  end
+
+  defp categorize(transaction_changeset, transaction) do
+    Ecto.Changeset.put_change(transaction_changeset, :category_id, Categories.Interface.categorize(transaction))
   end
 
   def update(transaction_id, params) do
@@ -108,12 +113,14 @@ defmodule Transactions.Service do
 
   def recategorize_all() do
     Ecto.Query.from(p in Transactions.Schema, order_by: [desc: p.date])
+    |> Transactions.Repo.all
     |> Enum.map(&recategorize_transaction/1)
   end
 
   defp recategorize_transaction(transaction) do
     transaction
-    |> categorize()
+    |> Ecto.Changeset.change
+    |> categorize(transaction)
     |> Transactions.Repo.update()
   end
 

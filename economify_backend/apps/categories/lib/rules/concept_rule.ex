@@ -3,7 +3,7 @@ defmodule Rules.ConceptRule do
 
   @impl Rules.Rule
   def check(transaction, params) do
-    String.contains?(String.downcase(transaction["concept"]), String.downcase(params["concept"]))
+    String.contains?(String.downcase(transaction.concept), String.downcase(params["concept"]))
   end
 
 end

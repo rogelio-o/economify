@@ -47,7 +47,7 @@ defmodule Categories.Service do
   end
 
   def categorize(transaction) do
-    category_type = Categories.Schema.get_type_by_amount(transaction["amount"])
+    category_type = Categories.Schema.get_type_by_amount(transaction.amount)
 
     rules =
       Ecto.Query.from(

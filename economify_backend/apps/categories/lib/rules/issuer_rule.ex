@@ -3,7 +3,7 @@ defmodule Rules.IssuerRule do
 
   @impl Rules.Rule
   def check(transaction, params) do
-    transaction["issuer_id"] === params["issuer_id"]
+    transaction.issuer_id === params["issuer_id"]
   end
 
 end
