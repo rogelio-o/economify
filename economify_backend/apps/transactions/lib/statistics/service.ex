@@ -49,4 +49,30 @@ defmodule Transactions.Statistics.Service do
       type: category.type
     }
   end
+
+  def saves(year) do
+    statistics = statistics_saves(year)
+
+    %{
+      statistics: statistics
+    }
+  end
+
+  defp statistics_saves(year) do
+    Enum.to_list(1..12)
+    |> Enum.map(fn month -> statistics_saves_by_month(month, year) end)
+  end
+
+  defp statistics_saves_by_month(month, year) do
+    {:ok, start_date} = Date.from_erl({year, month, 1})
+
+    end_date =
+      start_date
+      |> Date.add(Date.days_in_month(start_date))
+
+    Ecto.Query.from(p in Transactions.Schema, where: p.date >= ^start_date and p.date <= ^end_date)
+    |> Transactions.Repo.all()
+    |> Enum.map(fn t -> t.amount end)
+    |> Enum.sum
+  end
 end

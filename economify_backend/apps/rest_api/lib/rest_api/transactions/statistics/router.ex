@@ -11,4 +11,10 @@ defmodule RestApi.Transactions.Statistics.Router do
       |> send_as_json(200, conn)
   end
 
+  get "/saves/:year" do
+    {year, _} = Integer.parse(conn.path_params["year"])
+    Transactions.Interface.statistics_saves(year)
+      |> send_as_json(200, conn)
+  end
+
 end

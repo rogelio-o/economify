@@ -23,4 +23,5 @@ defmodule Transactions.Interface do
   defdelegate merge_issuers(issuer_a_id, issuer_b_id), to: Issuers.Service, as: :merge
 
   defdelegate statistics_by_category(year), to: Transactions.Statistics.Service, as: :by_category
+  defdelegate statistics_saves(year), to: Transactions.Statistics.Service, as: :saves
 end
