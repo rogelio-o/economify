@@ -16,7 +16,8 @@ import CreateCategoryPage from 'pages/categories/CreateCategoryPage';
 import UpdateCategoryPage from 'pages/categories/UpdateCategoryPage';
 import CreateRulePage from 'pages/categories/rules/CreateRulePage';
 import UpdateRulePage from 'pages/categories/rules/UpdateRulePage';
-import StatisticsPage from 'pages/StatisticsPage';
+import HomePage from 'pages/StatisticsPage';
+import StatisticsPage from 'pages/statistics/StatisticsPage';
 import './styles/app.scss';
 
 const getBasename = () => {
@@ -32,7 +33,7 @@ class App extends Component {
             exact
             path="/"
             layout={MainLayout}
-            component={StatisticsPage}
+            component={HomePage}
           />
           <LayoutRoute
             exact

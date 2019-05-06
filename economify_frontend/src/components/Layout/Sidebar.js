@@ -23,6 +23,7 @@ const navItems = [
     Icon: MdWidgets,
   },
   { to: '/issuers', name: 'issuers', exact: false, Icon: MdInsertChart },
+  { to: '/statistics', name: 'statistics', exact: false, Icon: MdInsertChart },
 ];
 
 const bem = bn.create('sidebar');
