@@ -34,7 +34,10 @@ class TransactionsTable extends React.Component {
         text: 'Date',
         filter: dateFilter({
           defaultValue: {
-            date: props.filters.date !== '' ? new Date(props.filters.date) : '',
+            date:
+              props.filters.date !== null
+                ? new Date(props.filters.date)
+                : undefined,
             comparator: props.filters.date_comparator,
           },
           comparators: [Comparator.EQ],
@@ -77,6 +80,7 @@ class TransactionsTable extends React.Component {
       <DataTable
         keyField="transaction_id"
         page={this.props.page}
+        filters={this.props.filters}
         setSetLoading={this.props.setSetLoading}
         setRefresh={this.props.setRefresh}
         loadData={getTransactionsPage}

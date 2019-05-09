@@ -51,6 +51,7 @@ class TransactionsPage extends React.Component {
     const filtersQuery = stringifyQuery(filters);
     const url = `/transactions?page=${page}&${filtersQuery}`;
 
+    window.sessionStorage.setItem('TRANSACTIONS_PAGE', url);
     this.props.history.push(url);
   }
 
@@ -173,7 +174,7 @@ class TransactionsPage extends React.Component {
                       getQueryParam(this.props.location.search, 'concept') ||
                       '',
                     date:
-                      getQueryParam(this.props.location.search, 'date') || '',
+                      getQueryParam(this.props.location.search, 'date') || null,
                   }}
                   setTableData={this.setTableData.bind(this)}
                   setSetLoading={setLoading => (this._setLoading = setLoading)}
