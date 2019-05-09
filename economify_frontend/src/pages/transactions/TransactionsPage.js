@@ -17,22 +17,6 @@ class TransactionsPage extends React.Component {
   _refresh = null;
   _setLoading = null;
 
-  constructor(props) {
-    super(props);
-
-    window.sessionStorage.setItem(
-      'TRANSACTIONS_PAGE',
-      props.location.pathname + props.location.search,
-    );
-  }
-
-  componentDidUpdate() {
-    window.sessionStorage.setItem(
-      'TRANSACTIONS_PAGE',
-      this.props.location.pathname + this.props.location.search,
-    );
-  }
-
   handleDelete(transactionId) {
     if (window.confirm('Are you sure you want to delete this entry?')) {
       this._setLoading(true);
@@ -51,7 +35,6 @@ class TransactionsPage extends React.Component {
     const filtersQuery = stringifyQuery(filters);
     const url = `/transactions?page=${page}&${filtersQuery}`;
 
-    window.sessionStorage.setItem('TRANSACTIONS_PAGE', url);
     this.props.history.push(url);
   }
 
@@ -60,7 +43,12 @@ class TransactionsPage extends React.Component {
       <ButtonGroup className="mr-3 mb-3">
         <Button
           tag={Link}
-          to={`/transactions/${row.transaction_id}`}
+          to={{
+            pathname: `/transactions/${row.transaction_id}`,
+            state: {
+              goBackUrl: this.getGoBackUrl(),
+            },
+          }}
           color="info"
         >
           <MdModeEdit />
@@ -73,6 +61,10 @@ class TransactionsPage extends React.Component {
         </Button>
       </ButtonGroup>
     );
+  }
+
+  getGoBackUrl() {
+    return this.props.location.pathname + this.props.location.search;
   }
 
   handleImportClick() {
@@ -136,7 +128,16 @@ class TransactionsPage extends React.Component {
         <Row>
           <Col>
             <ButtonGroup className="float-right">
-              <Button tag={Link} to="/transactions/create" color="success">
+              <Button
+                tag={Link}
+                to={{
+                  pathname: '/transactions/create',
+                  state: {
+                    goBackUrl: this.getGoBackUrl(),
+                  },
+                }}
+                color="success"
+              >
                 <MdAdd />
                 New transaction
               </Button>

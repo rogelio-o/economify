@@ -85,7 +85,15 @@ class UpdateCategoryPage extends React.Component {
       <ButtonGroup className="mr-3 mb-3">
         <Button
           tag={Link}
-          to={`/categories/${row.category_id}/rules/${row.category_rule_id}`}
+          to={{
+            pathname: `/categories/${row.category_id}/rules/${
+              row.category_rule_id
+            }`,
+            state: {
+              rulesGoBackUrl: this.getRulesGoBackUrl(),
+              goBackUrl: this.getGoBackUrl(),
+            },
+          }}
           color="info"
         >
           <MdModeEdit />
@@ -105,6 +113,14 @@ class UpdateCategoryPage extends React.Component {
     this.props.history.push(`/categories/${categoryId}?rules_page=${page}`);
   }
 
+  getGoBackUrl() {
+    return (this.props.location.state || {}).goBackUrl;
+  }
+
+  getRulesGoBackUrl() {
+    return this.props.location.pathname + this.props.location.search;
+  }
+
   render() {
     const categoryId = this.props.match.params.category_id;
 
@@ -119,7 +135,7 @@ class UpdateCategoryPage extends React.Component {
           },
         ]}
         history={this.props.history}
-        goBackUrl={`/categories`}
+        goBackUrl={this.getGoBackUrl()}
       >
         <Row>
           <Col>
@@ -147,7 +163,13 @@ class UpdateCategoryPage extends React.Component {
           <Col>
             <Button
               tag={Link}
-              to={`/categories/${categoryId}/rules/create`}
+              to={{
+                pathname: `/categories/${categoryId}/rules/create`,
+                state: {
+                  rulesGoBackUrl: this.getRulesGoBackUrl(),
+                  goBackUrl: this.getGoBackUrl(),
+                },
+              }}
               color="success"
               className="float-right"
             >

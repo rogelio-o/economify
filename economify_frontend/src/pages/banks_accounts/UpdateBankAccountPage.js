@@ -55,6 +55,10 @@ class UpdateBankAccountPage extends React.Component {
       });
   }
 
+  getGoBackUrl() {
+    return (this.props.location.state || {}).goBackUrl;
+  }
+
   render() {
     return (
       <Page
@@ -67,7 +71,7 @@ class UpdateBankAccountPage extends React.Component {
           },
         ]}
         history={this.props.history}
-        goBackUrl={`/banks/accounts`}
+        goBackUrl={this.getGoBackUrl()}
       >
         <Row>
           <Col>

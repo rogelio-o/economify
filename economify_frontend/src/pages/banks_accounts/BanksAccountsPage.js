@@ -31,7 +31,10 @@ class BanksAccountsPage extends React.Component {
       <ButtonGroup className="mr-3 mb-3">
         <Button
           tag={Link}
-          to={`/banks/accounts/${row.bank_account_id}`}
+          to={{
+            pathname: `/banks/accounts/${row.bank_account_id}`,
+            state: { goBackUrl: this.getGoBackUrl() },
+          }}
           color="info"
         >
           <MdModeEdit />
@@ -46,6 +49,10 @@ class BanksAccountsPage extends React.Component {
     );
   }
 
+  getGoBackUrl() {
+    return this.props.location.pathname + this.props.location.search;
+  }
+
   render() {
     return (
       <Page
@@ -57,7 +64,10 @@ class BanksAccountsPage extends React.Component {
           <Col>
             <Button
               tag={Link}
-              to="/banks/accounts/create"
+              to={{
+                pathname: '/banks/accounts/create',
+                state: { goBackUrl: this.getGoBackUrl() },
+              }}
               color="success"
               className="float-right"
             >

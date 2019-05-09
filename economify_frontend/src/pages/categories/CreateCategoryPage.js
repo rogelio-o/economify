@@ -41,13 +41,17 @@ class CreateCategoryPage extends React.Component {
       });
   }
 
+  getGoBackUrl() {
+    return (this.props.location.state || {}).goBackUrl;
+  }
+
   render() {
     return (
       <Page
         title="Create Category"
         breadcrumbs={[{ name: 'Categories' }, { name: 'Create', active: true }]}
         history={this.props.history}
-        goBackUrl={`/categories`}
+        goBackUrl={this.getGoBackUrl()}
       >
         <Row>
           <Col>

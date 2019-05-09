@@ -29,7 +29,14 @@ class CategoriesPage extends React.Component {
   renderButtons(row) {
     return (
       <ButtonGroup className="mr-3 mb-3">
-        <Button tag={Link} to={`/categories/${row.category_id}`} color="info">
+        <Button
+          tag={Link}
+          to={{
+            pathname: `/categories/${row.category_id}`,
+            state: { goBackUrl: this.getGoBackUrl() },
+          }}
+          color="info"
+        >
           <MdModeEdit />
         </Button>
         <Button
@@ -40,6 +47,10 @@ class CategoriesPage extends React.Component {
         </Button>
       </ButtonGroup>
     );
+  }
+
+  getGoBackUrl() {
+    return this.props.location.pathname + this.props.location.search;
   }
 
   render() {
@@ -53,7 +64,10 @@ class CategoriesPage extends React.Component {
           <Col>
             <Button
               tag={Link}
-              to="/categories/create"
+              to={{
+                pathname: '/categories/create',
+                state: { goBackUrl: this.getGoBackUrl() },
+              }}
               color="success"
               className="float-right"
             >

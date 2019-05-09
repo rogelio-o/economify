@@ -70,9 +70,15 @@ class CreateRulePage extends React.Component {
       });
   }
 
-  render() {
-    const categoryId = this.props.match.params.category_id;
+  getGoBackUrl() {
+    return (this.props.location.state || {}).goBackUrl;
+  }
 
+  getRulesGoBackUrl() {
+    return (this.props.location.state || {}).rulesGoBackUrl;
+  }
+
+  render() {
     return (
       <Page
         title="Create Rule"
@@ -82,7 +88,10 @@ class CreateRulePage extends React.Component {
           { name: 'Create', active: true },
         ]}
         history={this.props.history}
-        goBackUrl={`/categories/${categoryId}`}
+        goBackUrl={{
+          pathname: this.getRulesGoBackUrl(),
+          state: { goBackUrl: this.getGoBackUrl() },
+        }}
       >
         <Row>
           <Col>

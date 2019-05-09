@@ -19,9 +19,6 @@ class CreateTransactionPage extends React.Component {
     loading: false,
   };
 
-  _goBackUrl =
-    window.sessionStorage.getItem('TRANSACTIONS_PAGE') || `/transactions`;
-
   handleChange(name, value) {
     this.setState({
       model: {
@@ -49,6 +46,10 @@ class CreateTransactionPage extends React.Component {
       });
   }
 
+  getGoBackUrl() {
+    return (this.props.location.state || {}).goBackUrl;
+  }
+
   render() {
     return (
       <Page
@@ -58,7 +59,7 @@ class CreateTransactionPage extends React.Component {
           { name: 'Create', active: true },
         ]}
         history={this.props.history}
-        goBackUrl={this._goBackUrl}
+        goBackUrl={this.getGoBackUrl()}
       >
         <Row>
           <Col>

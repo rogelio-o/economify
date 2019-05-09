@@ -41,6 +41,10 @@ class CreateBankAccountPage extends React.Component {
       });
   }
 
+  getGoBackUrl() {
+    return (this.props.location.state || {}).goBackUrl;
+  }
+
   render() {
     return (
       <Page
@@ -50,7 +54,7 @@ class CreateBankAccountPage extends React.Component {
           { name: 'Create', active: true },
         ]}
         history={this.props.history}
-        goBackUrl={`/banks/accounts`}
+        goBackUrl={this.getGoBackUrl()}
       >
         <Row>
           <Col>

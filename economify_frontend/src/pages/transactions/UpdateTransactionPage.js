@@ -18,9 +18,6 @@ class UpdateTransactionPage extends React.Component {
     loadingModel: true,
   };
 
-  _goBackUrl =
-    window.sessionStorage.getItem('TRANSACTIONS_PAGE') || `/transactions`;
-
   componentDidMount() {
     const transactionId = this.props.match.params.transaction_id;
 
@@ -58,6 +55,10 @@ class UpdateTransactionPage extends React.Component {
       });
   }
 
+  getGoBackUrl() {
+    return (this.props.location.state || {}).goBackUrl;
+  }
+
   render() {
     return (
       <Page
@@ -70,7 +71,7 @@ class UpdateTransactionPage extends React.Component {
           },
         ]}
         history={this.props.history}
-        goBackUrl={this._goBackUrl}
+        goBackUrl={this.getGoBackUrl()}
       >
         <Row>
           <Col>

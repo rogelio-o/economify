@@ -8,22 +8,6 @@ import { deleteIssuer } from 'services/issuersService';
 import { getQueryParam, stringifyQuery } from 'utils/query';
 
 class IssuersPage extends React.Component {
-  constructor(props) {
-    super(props);
-
-    window.sessionStorage.setItem(
-      'ISSUERS_PAGE',
-      props.location.pathname + props.location.search,
-    );
-  }
-
-  componentDidUpdate() {
-    window.sessionStorage.setItem(
-      'ISSUERS_PAGE',
-      this.props.location.pathname + this.props.location.search,
-    );
-  }
-
   handleDelete(issuerId) {
     if (window.confirm('Are you sure you want to delete this entry?')) {
       this._setLoading(true);
@@ -41,7 +25,14 @@ class IssuersPage extends React.Component {
   renderButtons(row) {
     return (
       <ButtonGroup className="mr-3 mb-3">
-        <Button tag={Link} to={`/issuers/${row.issuer_id}`} color="info">
+        <Button
+          tag={Link}
+          to={{
+            pathname: `/issuers/${row.issuer_id}`,
+            state: { goBackUrl: this.getGoBackUrl() },
+          }}
+          color="info"
+        >
           <MdModeEdit />
         </Button>
         <Button color="danger" onClick={e => this.handleDelete(row.issuer_id)}>
@@ -55,8 +46,11 @@ class IssuersPage extends React.Component {
     const filtersQuery = stringifyQuery(filters);
     const url = `/issuers?page=${page}&${filtersQuery}`;
 
-    window.sessionStorage.setItem('ISSUERS_PAGE', url);
     this.props.history.push(url);
+  }
+
+  getGoBackUrl() {
+    return this.props.location.pathname + this.props.location.search;
   }
 
   render() {
@@ -70,7 +64,10 @@ class IssuersPage extends React.Component {
           <Col>
             <Button
               tag={Link}
-              to="/issuers/create"
+              to={{
+                pathname: '/issuers/create',
+                state: { goBackUrl: this.getGoBackUrl() },
+              }}
               color="success"
               className="float-right"
             >

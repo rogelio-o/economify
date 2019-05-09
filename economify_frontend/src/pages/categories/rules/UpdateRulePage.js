@@ -73,9 +73,15 @@ class UpdateRulePage extends React.Component {
       });
   }
 
-  render() {
-    const categoryId = this.props.match.params.category_id;
+  getGoBackUrl() {
+    return (this.props.location.state || {}).goBackUrl;
+  }
 
+  getRulesGoBackUrl() {
+    return (this.props.location.state || {}).rulesGoBackUrl;
+  }
+
+  render() {
     return (
       <Page
         title="Update Rule"
@@ -88,7 +94,10 @@ class UpdateRulePage extends React.Component {
           },
         ]}
         history={this.props.history}
-        goBackUrl={`/categories/${categoryId}`}
+        goBackUrl={{
+          pathname: this.getRulesGoBackUrl(),
+          state: { goBackUrl: this.getGoBackUrl() },
+        }}
       >
         <Row>
           <Col>
