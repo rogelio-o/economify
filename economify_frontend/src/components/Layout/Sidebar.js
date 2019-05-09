@@ -1,7 +1,14 @@
 import logo200Image from 'assets/img/logo/logo_200.png';
 import sidebarBgImage from 'assets/img/sidebar/sidebar-4.jpg';
 import React from 'react';
-import { MdDashboard, MdInsertChart, MdWeb, MdWidgets } from 'react-icons/md';
+import {
+  MdDashboard,
+  MdInsertChart,
+  MdViewHeadline,
+  MdWidgets,
+  MdCardTravel,
+  MdPeople,
+} from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 import { Nav, Navbar, NavItem, NavLink as BSNavLink } from 'reactstrap';
 import bn from 'utils/bemnames';
@@ -14,15 +21,20 @@ const sidebarBackground = {
 
 const navItems = [
   { to: '/', name: 'dashboard', exact: true, Icon: MdDashboard },
-  { to: '/transactions', name: 'transactions', exact: false, Icon: MdWeb },
-  { to: '/categories', name: 'categories', exact: false, Icon: MdInsertChart },
+  {
+    to: '/transactions',
+    name: 'transactions',
+    exact: false,
+    Icon: MdViewHeadline,
+  },
+  { to: '/categories', name: 'categories', exact: false, Icon: MdWidgets },
   {
     to: '/banks/accounts',
     name: 'banks accounts',
     exact: false,
-    Icon: MdWidgets,
+    Icon: MdCardTravel,
   },
-  { to: '/issuers', name: 'issuers', exact: false, Icon: MdInsertChart },
+  { to: '/issuers', name: 'issuers', exact: false, Icon: MdPeople },
   { to: '/statistics', name: 'statistics', exact: false, Icon: MdInsertChart },
 ];
 
