@@ -101,7 +101,12 @@ class UpdateIssuerPage extends React.Component {
         this.props.match.params.issuer_id,
       ).then(response => {
         if (response.success) {
-          this.props.history.push(`/issuers/${response.model.issuer_id.value}`);
+          this.props.history.push({
+            pathname: `/issuers/${response.model.issuer_id.value}`,
+            state: {
+              goBackUrl: this.getGoBackUrl(),
+            },
+          });
         }
       });
     }
