@@ -29,9 +29,10 @@ class CreateCategoryPage extends React.Component {
     createCategory(this.state.model)
       .then(response => {
         if (response.success) {
-          this.props.history.push(
-            `/categories/${response.model.category_id.value}`,
-          );
+          this.props.history.push({
+            pathname: `/categories/${response.model.category_id.value}`,
+            state: { goBackUrl: this.getGoBackUrl() },
+          });
         } else {
           this.setState({ model: response.model, loading: false });
         }
