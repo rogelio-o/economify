@@ -56,11 +56,15 @@ class CreateRulePage extends React.Component {
     createCategoryRule(categoryId, this.state.model)
       .then(response => {
         if (response.success) {
-          this.props.history.push(
-            `/categories/${categoryId}/rules/${
+          this.props.history.push({
+            pathname: `/categories/${categoryId}/rules/${
               response.model.category_rule_id.value
             }`,
-          );
+            state: {
+              rulesGoBackUrl: this.getRulesGoBackUrl(),
+              goBackUrl: this.getGoBackUrl(),
+            },
+          });
         } else {
           this.setState({ model: response.model, loading: false });
         }
