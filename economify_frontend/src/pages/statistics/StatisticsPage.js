@@ -24,7 +24,7 @@ const MONTHS = [
   'Dicember',
 ];
 
-const paseStatisticsByCategoryData = (data, color, filter, defaultFilter) => {
+const paseStatisticsByCategoryData = (data, color, filter) => {
   const datasets = Object.keys(data.data)
     .filter(key => filter(data.data[key]))
     .map(key => {
@@ -35,19 +35,9 @@ const paseStatisticsByCategoryData = (data, color, filter, defaultFilter) => {
         backgroundColor: color,
         borderColor: color,
         borderWidth: 1,
-        data: data.statistics.map(obj => Math.abs(obj[key])),
+        data: data.statistics.map(obj => Math.abs(obj[key] || 0)),
       };
     });
-
-  datasets.push({
-    label: 'default',
-    backgroundColor: color,
-    borderColor: color,
-    borderWidth: 1,
-    data: data.statistics.map(obj =>
-      defaultFilter(obj['']) ? Math.abs(obj['']) : '',
-    ),
-  });
 
   return {
     labels: MONTHS,
@@ -101,17 +91,14 @@ class StatisticsPage extends React.Component {
             data,
             getColor('danger'),
             c => c.type === 'expense',
-            amount => amount < 0,
           ),
-          dataIncomingsByCategoryAndMonth: paseStatisticsByCategoryData(
+          dataIncomesByCategoryAndMonth: paseStatisticsByCategoryData(
             data,
             getColor('success'),
-            c => c.type === 'incoming',
-            amount => amount > 0,
+            c => c.type === 'income',
           ),
+          loadingByCategory: false,
         });
-
-        this.setState({ loadingByCategory: false });
       })
       .catch(err => {
         alert('Error loading statistics by category.');
@@ -184,13 +171,13 @@ class StatisticsPage extends React.Component {
         <Row>
           <Col>
             <Card>
-              <CardHeader>Incomings by category and month</CardHeader>
+              <CardHeader>Incomes by category and month</CardHeader>
               <CardBody>
                 {this.loadingByCategory ? (
                   <Loading />
                 ) : (
                   <Bar
-                    data={this.state.dataIncomingsByCategoryAndMonth}
+                    data={this.state.dataIncomesByCategoryAndMonth}
                     options={{
                       scales: {
                         yAxes: [
