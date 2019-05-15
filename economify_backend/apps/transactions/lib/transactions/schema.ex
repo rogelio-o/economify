@@ -11,6 +11,7 @@ defmodule Transactions.Schema do
   schema "transactions" do
     field(:bank_id, :string)
     field(:category_id, :string)
+    field(:category_locked, :boolean)
     field(:status, StatusEnum, default: :created)
     field(:concept, :string)
     field(:amount, :float)
@@ -22,7 +23,15 @@ defmodule Transactions.Schema do
 
   def changeset(transaction, params \\ %{}) do
     transaction
-    |> Ecto.Changeset.cast(params, [:bank_id, :category_id, :issuer_id, :concept, :amount, :date])
+    |> Ecto.Changeset.cast(params, [
+      :bank_id,
+      :category_id,
+      :category_locked,
+      :issuer_id,
+      :concept,
+      :amount,
+      :date
+    ])
     |> Ecto.Changeset.validate_required([
       :bank_id,
       :issuer_id,

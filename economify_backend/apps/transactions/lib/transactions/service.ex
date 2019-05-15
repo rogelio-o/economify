@@ -29,6 +29,7 @@ defmodule Transactions.Service do
 
   defp categorize_if_no_category(transaction_changeset) do
     transaction = Ecto.Changeset.apply_changes(transaction_changeset)
+
     if transaction.category_id != nil and transaction.category_id != "" do
       transaction_changeset
     else
@@ -37,7 +38,11 @@ defmodule Transactions.Service do
   end
 
   defp categorize(transaction_changeset, transaction) do
-    Ecto.Changeset.put_change(transaction_changeset, :category_id, Categories.Interface.categorize(transaction))
+    Ecto.Changeset.put_change(
+      transaction_changeset,
+      :category_id,
+      Categories.Interface.categorize(transaction)
+    )
   end
 
   def update(transaction_id, params) do
@@ -112,14 +117,17 @@ defmodule Transactions.Service do
   end
 
   def recategorize_all() do
-    Ecto.Query.from(p in Transactions.Schema, order_by: [desc: p.date])
-    |> Transactions.Repo.all
+    Ecto.Query.from(p in Transactions.Schema,
+      where: p.category_locked == false,
+      order_by: [desc: p.date]
+    )
+    |> Transactions.Repo.all()
     |> Enum.map(&recategorize_transaction/1)
   end
 
   defp recategorize_transaction(transaction) do
     transaction
-    |> Ecto.Changeset.change
+    |> Ecto.Changeset.change()
     |> categorize(transaction)
     |> Transactions.Repo.update()
   end

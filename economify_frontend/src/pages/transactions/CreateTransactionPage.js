@@ -14,20 +14,27 @@ class CreateTransactionPage extends React.Component {
       bank_id: '',
       issuer_id: '',
       category_id: '',
+      category_locked: false,
     }),
     errorsMsgs: [],
     loading: false,
   };
 
   handleChange(name, value) {
-    this.setState({
-      model: {
-        ...this.state.model,
-        [name]: {
-          value: value,
-          errors: [],
-        },
+    const model = {
+      ...this.state.model,
+      [name]: {
+        value: value,
+        errors: [],
       },
+    };
+
+    if (name === 'category_id') {
+      model.category_locked = { value: true, errors: [] };
+    }
+
+    this.setState({
+      model,
     });
   }
 

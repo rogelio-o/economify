@@ -13,8 +13,8 @@ const renderMsgs = (msgs, color) => {
   } else {
     return (
       <Alert color={color}>
-        {msgs.map(msg => (
-          <Typography>{msg}</Typography>
+        {msgs.map((msg, index) => (
+          <Typography key={index}>{msg}</Typography>
         ))}
       </Alert>
     );
@@ -72,6 +72,13 @@ const TransactionForm = ({
         label="Category"
         model={model.category_id}
         handleChange={handleChange}
+      />
+      <InputGroup
+        id="category_locked"
+        label="Lock category"
+        model={model.category_locked}
+        handleChange={handleChange}
+        type="checkbox"
       />
       <FormSubmitButton loading={loading} handleSubmit={handleSubmit} />
     </Form>
