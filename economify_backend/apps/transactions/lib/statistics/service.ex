@@ -29,7 +29,7 @@ defmodule Transactions.Statistics.Service do
     Ecto.Query.from(p in Transactions.Schema, where: p.date >= ^start_date and p.date <= ^end_date)
     |> Transactions.Repo.all()
     |> Enum.group_by(fn t -> t.category_id end, fn t -> t.amount end)
-    |> Enum.map(fn {category_id, amounts} -> {category_id, Enum.sum(amounts)} end)
+    |> Enum.map(fn {category_id, amounts} -> {category_id, round_price(Enum.sum(amounts))} end)
     |> Enum.map(fn {category_id, amount} ->
       {transform_empty_category_id(category_id, amount), amount}
     end)
@@ -108,5 +108,9 @@ defmodule Transactions.Statistics.Service do
     |> Transactions.Repo.all()
     |> Enum.map(fn t -> t.amount end)
     |> Enum.sum()
+    |> round_price()
   end
+
+  defp round_price(float) when is_float(float), do: Float.round(float, 2)
+  defp round_price(int) when is_integer(int), do: int
 end
